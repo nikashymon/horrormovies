@@ -1,0 +1,42 @@
+<!DOCTYPE HTML>
+<html lang="uk">
+<head>
+    <meta charset='UTF-8'>
+    <title>Реєстрація</title>
+    <link rel="stylesheet" href="../static/register.css">
+</head>
+<body>
+<header>
+    <nav>
+        <ul>
+            <li><a href="/">Головна</a></li>
+            <li><a href="/films">Фільми</a></li>
+            <li><a href="/login">Логін</a></li>
+            <li><a href="/review">Створити відгук</a></li>
+            <li><a href="/reviews">Відгуки</a></li>
+        </ul>
+    </nav>
+</header>
+<div class="reg">
+    <h1>Приєднайся до світу страху</h1>
+    <form action="/register" method="POST">
+        <div class="reg-field">
+            <input type="text" name="username" id="username" required placeholder=" ">
+            <label for="username">Ім'я користувача</label>
+        </div>
+        <div class="reg-field">
+            <input type="email" name="email" id="email" required placeholder=" ">
+            <label for="email">Введіть свій E-Mail</label>
+        </div>
+        <div class="reg-field">
+            <input type="password" name="password" id="password" required placeholder=" ">
+            <label for="password">Введіть свій пароль</label>
+        </div>
+        <button type="submit">Зареєструватися</button>
+        <div class="account-options">
+            <p>Вже заходив до нашого світу? <a href="/login">Увійди тут</a></p>
+        </div>
+    </form>
+</div>
+</body>
+</html>

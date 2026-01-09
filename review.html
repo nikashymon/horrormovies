@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Відгуки</title>
+    <link rel="stylesheet" href="../static/review.css">
+</head>
+<body>
+<header>
+    <nav>
+        <ul>
+            <li><a href="/">Головна</a></li>
+            <li><a href="/films">Фільми</a></li>
+            <li><a href="/login">Логін</a></li>
+            <li><a href="/reviews">Відгуки</a></li>
+            <li><a href="/register">Реєстрація</a></li>
+        </ul>
+    </nav>
+</header>
+    <div class="rev">
+        <form action="/review" method="POST">
+            <h1>Залиште свій відгук</h1>
+            <div class="rev-field">
+                <input type="text" id="nickname" name="nickname" placeholder=" " required>
+                <label for="nickname">Нікнейм</label>
+            </div>
+            <div class="rev-field">
+                <textarea id="review" name="review" placeholder=" " required></textarea>
+                <label for="review">Ваш відгук</label>
+            </div>
+            <div class="rev-field">
+                <input type="number" id="rating" name="rating" min="1" max="10" required placeholder=" ">
+                <label for="rating">Оцінка (1-10): </label>
+            </div>                                                       
+            <button type="submit">Відправити</button>
+        </form>
+    </div>
+</body>
+</html>

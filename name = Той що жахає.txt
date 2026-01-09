@@ -1,0 +1,13 @@
+name = "Той що жахає"
+        genre = "Жахи, триллер"
+        country = "США"
+        year = datetime(year=2016, month=9, day=12)
+        duration = "1:24:26"
+        poster = "https://i.ytimg.com/vi/RMvDOQAmh98/maxresdefault.jpg"
+        description = "Які Жахи та моторошні історії можуть приховувати поліцейські фотороботи?"
+        video_path = "terrifier.mkv"
+
+        new_post = Film(name=name, genre=genre, country=country, year=year, duration=duration, poster=poster,
+                            description=description, video_path=video_path)
+        db.session.add(new_post)
+        db.session.commit()

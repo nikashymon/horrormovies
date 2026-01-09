@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Список Фільмів</title>
+    <link rel="stylesheet" href="../static/films.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="/">Головна</a></li>
+                <li><a href="/login">Логін</a></li>
+                <li><a href="/register">Реєстрація</a></li>
+                <li><a href="/review">Створити відгук</a></li>
+                <li><a href="/reviews">Відгуки</a></li>
+            </ul>
+        </nav>
+    </header>
+    {% block main %}
+    <ul>
+        {% for film in films %}
+            <div class="contain">
+                <div class="film_img">
+                    <a href="{{ url_for('film_detail', name=film.name) }}">
+                        <img src="{{film.poster}}" alt="{{film.name}}">
+                    </a>
+                </div>
+                <div class="film_text">
+                    <div>
+                        <h3>{{film.name}}</h3>
+                        <p class="film_country">{{film.country}}</p>
+                        <p class="film_year">{{film.year.strftime('%Y')}}</p>
+                        <p class="film_description">{{film.description}}</p>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </ul>
+    {% endblock %}
+</body>
+</html>

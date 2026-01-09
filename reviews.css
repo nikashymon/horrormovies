@@ -1,0 +1,100 @@
+body {
+    margin: 0;
+    font-family: 'Courier New', Courier, monospace;
+    color: #f8f8f8;
+    background-image: url("images/background.jfif");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter: brightness(0.9);
+}
+
+header {
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 20px;
+    text-align: center;
+    border-bottom: 3px solid #ff0000;
+}
+
+nav {
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 10px;
+    border-bottom: 3px solid #ff0000;
+    text-align: center;
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin: 0 15px;
+    font-size: 1.2em;
+    transition: color 0.3s;
+}
+
+nav ul li a {
+    color: #f8f8f8;
+    text-decoration: none;
+}
+
+nav ul li a:hover {
+    color: #ff0000;
+    cursor: pointer;
+}
+
+h1 {
+    font-size: 3.5em;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.9);
+    margin: 20px 0;
+}
+
+.containt {
+    display: flex;
+    align-items: flex-start;
+    background-color: rgba(0, 0, 0, 0.7);
+    border-radius: 10px;
+    margin: 10px;
+    padding: 15px;
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+    transition: transform 0.3s;
+}
+
+.containt:hover {
+    transform: scale(1.02);
+}
+
+.review_nickname {
+    margin-right: 15px;
+}
+
+.nickname {
+    font-weight: bold;
+    color: #ff0000;
+    font-size: 1.2em;
+}
+
+.reviews_review {
+    flex-grow: 1;
+}
+
+.review {
+    font-size: 16px;
+    color: #f8f8f8;
+    margin: 0 0 5px;
+}
+
+.score {
+    font-weight: bold;
+    color: #ff9900;
+    font-size: 1.2em;
+}
+
+footer {
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 10px;
+    text-align: center;
+    border-top: 3px solid #ff0000;
+}

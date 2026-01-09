@@ -1,0 +1,120 @@
+body {
+    margin: 0;
+    font-family: 'Courier New', Courier, monospace;
+    color: #f8f8f8;
+    background-image: url("images/background.jfif");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter: brightness(0.9);
+}
+
+header {
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 20px;
+    text-align: center;
+    border-bottom: 3px solid #ff0000;
+}
+
+h1 {
+    font-size: 3.5em;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.9);
+    margin: 0;
+}
+
+.container {
+    display: flex;
+    margin: 20px;
+}
+
+.film-details {
+    flex: 1;
+    text-align: center;
+}
+
+.film-info {
+    flex: 2;
+    padding-left: 20px;
+}
+
+img {
+    max-width: 80%;
+    height: auto;
+    border-radius: 15px;
+    margin: 20px 0;
+    box-shadow: 0 0 10px rgba(255, 0, 0, 0.7);
+}
+
+.description-container {
+    text-align: center; /* Центруємо текст опису */
+    margin: 20px 0; /* Додаємо відступи */
+}
+
+.description-container p {
+    line-height: 1.6;
+    margin: 10px 0;
+    font-size: 1.2em; /* Збільште шрифт опису */
+    color: #ffffff; /* Змінюємо колір тексту на білий */
+}
+
+.video-container {
+    text-align: center;
+    margin: 20px 0;
+}
+
+video {
+    width: 80%; /* Збільште ширину відео до 80% */
+    height: auto; /* Зберігайте пропорції */
+    border-radius: 15px;
+    box-shadow: 0 0 10px rgba(255, 0, 0, 0.7);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+th, td {
+    padding: 15px;
+    text-align: left;
+    border: 1px solid rgba(255, 0, 0, 0.5);
+}
+
+th {
+    background-color: rgba(0, 0, 0, 0.6);
+    color: #ff0000;
+}
+
+h2 {
+    font-size: 2em;
+    margin-top: 20px;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
+}
+
+.back-button {
+    color: #ff0000;
+    text-decoration: none;
+    font-weight: bold;
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 15px;
+    border: 2px solid #ff0000;
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.back-button:hover {
+    background-color: rgba(255, 0, 0, 0.3);
+    color: #fff;
+}
+
+footer {
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 10px;
+    text-align: center;
+    border-top: 3px solid #ff0000;
+}

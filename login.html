@@ -1,0 +1,44 @@
+<!DOCTYPE HTML>
+<html lang="uk">
+<head>
+    <meta charset='UTF-8'>
+    <title>Horror Films</title>
+    <link rel="stylesheet" href="../static/login.css">
+</head>
+<body>
+<header>
+        <nav>
+            <ul>
+                <li><a href="/">Головна</a></li>
+                <li><a href="/films">Фільми</a></li>
+                <li><a href="/register">Реєстрація</a></li>
+                <li><a href="/review">Створити відгук</a></li>
+                <li><a href="/reviews">Відгуки</a></li>
+            </ul>
+        </nav>
+</header>
+    <div class="log">
+        <form action="/login" method="POST">
+            <h1>Увійти в світ страху</h1>
+            <div class="input-field">
+                <input type="email" name="email" id="mail" required placeholder=" ">
+                <label for="mail">Введіть свій E-Mail</label>
+            </div>
+            <div class="input-field">
+                <input type="password" name="password" id="password" required placeholder=" ">
+                <label for="password">Введіть свій пароль</label>
+            </div>
+            <div class="password-options">
+                <label for="remember">
+                    <input type="checkbox" id="remember">
+                    Згадати мене
+                </label>
+            </div>
+            <button type="submit">Увійти</button>
+            <div class="account-options">
+                <p>Ще не бував у нашому світі? Це твій останій шанс відмовитись, але якщо дуже сміливий <a href="/register">Реєструйся</a></p>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

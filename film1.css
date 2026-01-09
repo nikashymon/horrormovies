@@ -1,0 +1,65 @@
+body {
+    margin: 0;
+    font-family: 'Courier New', Courier, monospace;
+    color: #f8f8f8;
+    background-image: url("images/background.jfif");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter: brightness(0.8);
+}
+
+.film {
+    max-width: 600px;
+    margin: 100px auto;
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.7);
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.7);
+}
+
+h1 {
+    font-size: 2.5em;
+    text-align: center;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
+    margin-bottom: 20px;
+}
+
+.poster {
+    display: block;
+    max-width: 100%;
+    margin: 0 auto 20px;
+}
+
+table {
+    width: 100%;
+    margin-bottom: 20px;
+    border-collapse: collapse;
+}
+
+table, th, td {
+    border: 1px solid #ff0000;
+}
+
+th, td {
+    padding: 10px;
+    text-align: center;
+}
+
+th {
+    background-color: rgba(255, 0, 0, 0.5);
+}
+
+h2 {
+    text-align: center;
+    margin-top: 20px;
+}
+
+p {
+    text-align: justify;
+}
+.video {
+    display: block;
+    max-width: 80%;
+    margin: 0 auto 20px;
+}

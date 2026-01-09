@@ -1,0 +1,108 @@
+body {
+    margin: 0;
+    font-family: 'Courier New', Courier, monospace;
+    color: #f8f8f8;
+    background-image: url("images/background.jfif");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter: brightness(0.9);
+}
+
+header {
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 20px;
+    text-align: center;
+    border-bottom: 3px solid #ff0000;
+}
+
+
+h1 {
+    font-size: 3.5em;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.9);
+    margin: 20px 0;
+}
+
+ul {
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.contain {
+    background-color: rgba(0, 0, 0, 0.7);
+    border-radius: 10px;
+    margin: 10px;
+    width: calc(30% - 20px); /* Зменшено ширину вкладок */
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+    overflow: hidden;
+    transition: transform 0.3s;
+}
+
+.contain:hover {
+    transform: scale(1.05); /* Легкий ефект при наведенні */
+}
+
+.film_img img {
+    width: 100%;
+    border-bottom: 3px solid #ff0000;
+    transition: transform 0.3s;
+}
+
+.film_img img:hover {
+    transform: scale(1.1); /* Ефект збільшення при наведенні */
+}
+
+.film_text {
+    padding: 15px;
+}
+
+h3 {
+    font-size: 1.5em;
+    margin: 0 0 10px;
+    text-align: center;
+}
+
+.film_country,
+.film_year,
+.film_description {
+    margin: 5px 0;
+    text-align: center;
+    line-height: 1.5;
+}
+
+footer {
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 10px;
+    text-align: center;
+    border-top: 3px solid #ff0000;
+}
+nav {
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 10px;
+    border-bottom: 3px solid #ff0000;
+    text-align: center;
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin: 0 15px;
+    font-size: 1.2em;
+    transition: color 0.3s;
+}
+
+nav ul li a {
+    color: #f8f8f8;
+    text-decoration: none;
+}
+
+nav ul li a:hover {
+    color: #ff0000;
+    cursor: pointer;
+}

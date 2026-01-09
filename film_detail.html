@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/film_detail.css">
+    <title>{{ film.name }}</title>
+</head>
+<body>
+    <header>
+        <h1>{{ film.name }}</h1>
+    </header>
+
+    <div class="container">
+        <div class="film-details">
+            <img src="{{ film.poster }}" alt="{{ film.name }}">
+        </div>
+
+        <div class="film-info">
+            <h2>Про фільм</h2>
+            <table>
+                <tr>
+                    <th>Рік</th>
+                    <td>{{ film.year.strftime('%Y') }}</td>
+                </tr>
+                <tr>
+                    <th>Виробник</th>
+                    <td>{{ film.country }}</td>
+                </tr>
+                <tr>
+                    <th>Жанр</th>
+                    <td>{{ film.genre }}</td>
+                </tr>
+                <tr>
+                    <th>Тривалість</th>
+                    <td>{{ film.duration }}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="description-container">
+        <h2>Опис</h2>
+        <p>{{ film.description }}</p>
+    </div>
+
+    <div class="video-container">
+        <video width="560" height="315" controls src="../static/videod/{{ film.video_path }}">
+        <source src="../static/videod/{{ film.video_path }}" type="video/mp4">
+        Ваш браузер не підтримує відео тег.
+        </video>
+        <a href="/films" class="back-button">Назад до списку фільмів</a>
+    </div>
+
+    <footer>
+        <p>© 2024 Всі права захищені</p>
+    </footer>
+</body>
+</html>

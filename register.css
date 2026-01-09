@@ -1,0 +1,120 @@
+body {
+    margin: 0;
+    font-family: 'Courier New', Courier, monospace;
+    color: #f8f8f8;
+    background-image: url("images/background.jfif");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter: brightness(0.8);
+}
+
+.reg {
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.7);
+    border-radius: 10px;
+    margin: 50px auto;
+    max-width: 400px;
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.7);
+    text-align: center;
+}
+
+h1 {
+    font-size: 2.5em;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
+    margin-bottom: 20px;
+}
+
+.reg-field {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.reg-field input {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid #ff0000;
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #f8f8f8;
+    font-size: 1em;
+    transition: border-color 0.3s;
+}
+
+.reg-field input:focus {
+    border-color: #ff0000;
+    outline: none;
+}
+
+.reg-field label {
+    position: absolute;
+    top: 10px;
+    left: 15px;
+    color: #f8f8f8;
+    transition: 0.3s;
+}
+
+.reg-field input:focus + label,
+.reg-field input:not(:placeholder-shown) + label {
+    top: -10px;
+    left: 10px;
+    font-size: 0.8em;
+    color: #ff0000;
+}
+
+button {
+    padding: 10px 15px;
+    background-color: #ff0000;
+    border: none;
+    border-radius: 5px;
+    color: #f8f8f8;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #cc0000;
+}
+
+.account-options {
+    margin-top: 15px;
+}
+
+.account-options a {
+    color: #ff0000;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.account-options a:hover {
+    color: #f8f8f8;
+}
+nav {
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 10px;
+    border-bottom: 3px solid #ff0000;
+    text-align: center;
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin: 0 15px;
+    font-size: 1.2em;
+    transition: color 0.3s;
+}
+
+nav ul li a {
+    color: #f8f8f8;
+    text-decoration: none;
+}
+
+nav ul li a:hover {
+    color: #ff0000;
+    cursor: pointer;
+}

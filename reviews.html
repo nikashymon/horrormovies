@@ -1,0 +1,23 @@
+<nav>
+            <ul>
+                <li><a href="/">Головна</a></li>
+                <li><a href="/login">Логін</a></li>
+                <li><a href="/register">Реєстрація</a></li>
+                <li><a href="/review">Створити відгук</a></li>
+                <li><a href="/films">Фільми</a></li>
+            </ul>
+</nav>
+<link rel="stylesheet" href="../static/reviews.css">
+{% for review in reviews%}
+        <div class="containt">
+            <div class="review_nickname">
+                <p class="review_nickname">{{review.nickname}}</p>
+            </div>
+            <div class=reviews_review>
+                <div>
+                    <p class="review"> {{review.review}} </p>
+                    <p class="score"> {{review.score}} </p>
+                </div>
+            </div>
+        </div>
+{% endfor %}

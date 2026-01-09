@@ -1,0 +1,141 @@
+body {
+    margin: 0;
+    font-family: 'Courier New', Courier, monospace;
+    color: #f8f8f8;
+    background-image: url("images/background.jfif");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter: brightness(0.8);
+}
+
+.rev {
+    max-width: 400px;
+    margin: 100px auto;
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.7);
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.7);
+}
+
+h1 {
+    font-size: 2.5em;
+    text-align: center;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
+    margin-bottom: 20px;
+}
+
+.rev-field {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.rev-field input,
+.rev-field textarea {
+    width: 100%;
+    padding: 10px 10px 10px 5px;
+    border: 2px solid #ff0000;
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #f8f8f8;
+    transition: border-color 0.3s;
+}
+
+.rev-field input:focus,
+.rev-field textarea:focus {
+    border-color: #ff0000;
+    outline: none;
+}
+
+.rev-field label {
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    color: #f8f8f8;
+    transition: 0.2s;
+    pointer-events: none;
+}
+
+.rev-field input:focus + label,
+.rev-field input:not(:placeholder-shown) + label,
+.rev-field textarea:focus + label,
+.rev-field textarea:not(:placeholder-shown) + label {
+    top: -15px;  
+    left: 5px;
+    font-size: 0.9em;
+    color: #ff0000;
+}
+
+.rev-field input::placeholder,
+.rev-field textarea::placeholder {
+    color: transparent; 
+}
+
+.rev-field input + .placeholder-label {
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    color: #ff0000;
+    pointer-events: none;
+    transition: 0.2s;
+}
+
+.rev-field input:focus + .placeholder-label,
+.rev-field input:not(:placeholder-shown) + .placeholder-label {
+    top: -15px;  
+    left: 5px;
+    font-size: 0.9em;
+    color: #ff0000;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #ff0000;
+    border: none;
+    border-radius: 5px;
+    color: #f8f8f8;
+    font-size: 1.2em;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #cc0000;
+}
+.a1{
+     position: absolute;
+    left: 10px;
+    top: 10px;
+    color: #f8f8f8;
+    transition: 0.2s;
+    pointer-events: none;
+}
+nav {
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 10px;
+    border-bottom: 3px solid #ff0000;
+    text-align: center;
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin: 0 15px;
+    font-size: 1.2em;
+    transition: color 0.3s;
+}
+
+nav ul li a {
+    color: #f8f8f8;
+    text-decoration: none;
+}
+
+nav ul li a:hover {
+    color: #ff0000;
+    cursor: pointer;
+}
