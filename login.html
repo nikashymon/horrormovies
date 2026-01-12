@@ -1,0 +1,810 @@
+<!DOCTYPE HTML>
+<html lang="uk">
+<head>
+    <meta charset='UTF-8'>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вхід | Портал жахів</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --blood-red: #8b0000;
+            --dark-red: #5a0000;
+            --neon-red: #ff0000;
+            --glow-red: #ff4444;
+            --deep-black: #0a0a0a;
+            --charcoal: #1a1a1a;
+            --ash-gray: #2a2a2a;
+            --bone-white: #f0f0f0;
+            --ghost-white: #e8e8e8;
+            --shadow: 0 10px 30px rgba(139, 0, 0, 0.3);
+            --glow: 0 0 15px rgba(255, 0, 0, 0.5);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @font-face {
+            font-family: 'HorrorFont';
+            src: url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&display=swap');
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--deep-black);
+            color: var(--bone-white);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                radial-gradient(circle at 20% 50%, rgba(139, 0, 0, 0.2) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(139, 0, 0, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(139, 0, 0, 0.1) 0%, transparent 50%);
+            z-index: -1;
+        }
+        .blood-drip {
+            position: fixed;
+            top: -100px;
+            width: 3px;
+            height: 100px;
+            background: linear-gradient(to bottom, transparent, var(--neon-red));
+            animation: drip 15s infinite linear;
+            opacity: 0.3;
+            z-index: -1;
+        }
+
+        .blood-drip:nth-child(2) { left: 20%; animation-delay: 3s; }
+        .blood-drip:nth-child(3) { left: 40%; animation-delay: 7s; }
+        .blood-drip:nth-child(4) { left: 60%; animation-delay: 11s; }
+        .blood-drip:nth-child(5) { left: 80%; animation-delay: 5s; }
+
+        @keyframes drip {
+            0% {
+                top: -100px;
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.5;
+            }
+            90% {
+                opacity: 0.5;
+            }
+            100% {
+                top: 100vh;
+                opacity: 0;
+            }
+        }
+
+        header {
+            background: rgba(26, 26, 26, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 3px solid var(--blood-red);
+            box-shadow: var(--shadow);
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        nav ul {
+            display: flex;
+            justify-content: center;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        nav ul li {
+            position: relative;
+        }
+
+        nav ul li a {
+            color: var(--ghost-white);
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            letter-spacing: 0.5px;
+        }
+
+        nav ul li a::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--neon-red);
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            color: var(--neon-red);
+            background: rgba(139, 0, 0, 0.1);
+        }
+
+        nav ul li a:hover::before {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+
+        nav ul li a.active {
+            color: var(--neon-red);
+            box-shadow: var(--glow);
+            background: rgba(139, 0, 0, 0.2);
+        }
+
+        .login-container {
+            min-height: calc(100vh - 90px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .login-card {
+            background: linear-gradient(145deg, rgba(26, 26, 26, 0.9), rgba(10, 10, 10, 0.9));
+            border-radius: 20px;
+            padding: 3rem 4rem;
+            width: 100%;
+            max-width: 500px;
+            box-shadow:
+                0 20px 50px rgba(0, 0, 0, 0.5),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(139, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .login-card:hover {
+            transform: translateY(-5px);
+            box-shadow:
+                0 25px 60px rgba(139, 0, 0, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            border-color: var(--neon-red);
+        }
+
+        .login-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--blood-red), var(--neon-red));
+        }
+
+        .login-card::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 0, 0, 0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.6s ease;
+            pointer-events: none;
+        }
+
+        .login-card:hover::after {
+            opacity: 1;
+        }
+
+        .form-title {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .form-title h1 {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 2.5rem;
+            color: var(--neon-red);
+            margin-bottom: 1rem;
+            text-shadow: 0 0 10px rgba(255, 0, 0, 0.3);
+            position: relative;
+            display: inline-block;
+        }
+
+        .form-title h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--neon-red), transparent);
+        }
+
+        .form-title p {
+            color: var(--ghost-white);
+            font-size: 1.1rem;
+            opacity: 0.8;
+            line-height: 1.6;
+        }
+
+        .form-group {
+            position: relative;
+            margin-bottom: 2rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 1rem 1rem 1rem 3rem;
+            background: rgba(42, 42, 42, 0.8);
+            border: 2px solid var(--ash-gray);
+            border-radius: 12px;
+            color: var(--bone-white);
+            font-size: 1rem;
+            transition: var(--transition);
+            outline: none;
+        }
+
+        .form-input:focus {
+            border-color: var(--neon-red);
+            box-shadow: 0 0 0 3px rgba(255, 0, 0, 0.2);
+            background: rgba(42, 42, 42, 0.9);
+        }
+
+        .form-input::placeholder {
+            color: transparent;
+        }
+
+        .form-label {
+            position: absolute;
+            left: 3rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(240, 240, 240, 0.6);
+            font-size: 1rem;
+            transition: var(--transition);
+            pointer-events: none;
+            background: transparent;
+            padding: 0 0.5rem;
+        }
+
+        .form-input:focus + .form-label,
+        .form-input:not(:placeholder-shown) + .form-label {
+            top: -10px;
+            left: 1rem;
+            font-size: 0.9rem;
+            color: var(--neon-red);
+            background: rgba(26, 26, 26, 0.9);
+            padding: 0 0.5rem;
+        }
+
+        .form-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--neon-red);
+            font-size: 1.1rem;
+            transition: var(--transition);
+        }
+
+        .form-input:focus ~ .form-icon {
+            color: var(--glow-red);
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .password-options {
+            margin: 1.5rem 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+        }
+
+        .remember-me input[type="checkbox"] {
+            display: none;
+        }
+
+        .checkbox-custom {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--ash-gray);
+            border-radius: 4px;
+            position: relative;
+            transition: var(--transition);
+            background: rgba(42, 42, 42, 0.8);
+        }
+
+        .remember-me input[type="checkbox"]:checked + .checkbox-custom {
+            background: var(--neon-red);
+            border-color: var(--neon-red);
+        }
+
+        .remember-me input[type="checkbox"]:checked + .checkbox-custom::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .remember-me label {
+            color: var(--ghost-white);
+            cursor: pointer;
+            font-size: 0.95rem;
+            user-select: none;
+        }
+
+        .remember-me:hover .checkbox-custom {
+            border-color: var(--neon-red);
+        }
+
+        .forgot-password {
+            color: var(--neon-red);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: var(--transition);
+        }
+
+        .forgot-password:hover {
+            color: var(--glow-red);
+            text-decoration: underline;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 1.2rem;
+            background: linear-gradient(135deg, var(--blood-red), var(--neon-red));
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(255, 0, 0, 0.4);
+        }
+
+        .submit-btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .submit-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .register-link {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(139, 0, 0, 0.2);
+        }
+
+        .register-link p {
+            color: var(--ghost-white);
+            font-size: 1rem;
+            opacity: 0.8;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .register-link a {
+            color: var(--neon-red);
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .register-link a:hover {
+            color: var(--glow-red);
+            gap: 0.8rem;
+            text-shadow: 0 0 10px rgba(255, 0, 0, 0.3);
+        }
+
+        .form-input:invalid:not(:focus):not(:placeholder-shown) {
+            border-color: #ff4444;
+            animation: shake 0.3s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .error-message {
+            color: #ff4444;
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        .form-input:invalid:not(:focus):not(:placeholder-shown) ~ .error-message {
+            display: block;
+        }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(255, 0, 0, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0); }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @media (max-width: 768px) {
+            .login-card {
+                padding: 2.5rem 2rem;
+                margin: 1rem;
+            }
+
+            .form-title h1 {
+                font-size: 2rem;
+            }
+
+            nav ul {
+                flex-wrap: wrap;
+                gap: 1rem;
+                justify-content: center;
+            }
+
+            nav ul li a {
+                font-size: 1rem;
+                padding: 0.5rem 0.8rem;
+            }
+
+            .password-options {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .login-card {
+                padding: 2rem 1.5rem;
+            }
+
+            .form-title h1 {
+                font-size: 1.8rem;
+            }
+
+            .form-input {
+                padding: 0.9rem 0.9rem 0.9rem 2.8rem;
+                font-size: 0.95rem;
+            }
+
+            .form-label {
+                left: 2.8rem;
+                font-size: 0.95rem;
+            }
+
+            .submit-btn {
+                padding: 1rem;
+                font-size: 1rem;
+            }
+
+            .login-container {
+                padding: 1rem;
+            }
+
+            .register-link p {
+                font-size: 0.95rem;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-card {
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+        body.light-mode {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: #333;
+        }
+
+        body.light-mode::before {
+            background: none;
+        }
+
+        body.light-mode header {
+            background: rgba(255, 255, 255, 0.95);
+            border-bottom: 3px solid #ff4444;
+        }
+
+        body.light-mode nav ul li a {
+            color: #555;
+        }
+
+        body.light-mode nav ul li a:hover {
+            color: #ff4444;
+            background: rgba(255, 68, 68, 0.1);
+        }
+
+        body.light-mode .login-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-color: rgba(255, 68, 68, 0.3);
+        }
+
+        body.light-mode .form-input {
+            background: rgba(255, 255, 255, 0.9);
+            border-color: #ddd;
+            color: #333;
+        }
+
+        body.light-mode .form-label {
+            color: #666;
+        }
+
+        body.light-mode .remember-me label {
+            color: #555;
+        }
+
+        body.light-mode .register-link p {
+            color: #666;
+        }
+
+        body.light-mode .checkbox-custom {
+            background: rgba(240, 240, 240, 0.9);
+            border-color: #bbb;
+        }
+    </style>
+</head>
+<body>
+    <div class="blood-drip"></div>
+    <div class="blood-drip"></div>
+    <div class="blood-drip"></div>
+    <div class="blood-drip"></div>
+    <div class="blood-drip"></div>
+
+    <header>
+        <nav>
+            <ul>
+                <li><a href="/">Головна</a></li>
+                <li><a href="/films">Фільми</a></li>
+                <li><a href="/register">Реєстрація</a></li>
+                <li><a href="/review">Створити відгук</a></li>
+                <li><a href="/reviews">Відгуки</a></li>
+            </ul>
+        </nav>
+    </header>
+    <div class="login-container">
+        <div class="login-card">
+            <div class="form-title">
+                <h1>Увійти у світ страху</h1>
+                <p>Зайдіть у свій обліковий запис, щоб продовжити вашу подорож у царство жахів</p>
+            </div>
+
+            <form action="/login" method="POST">
+                <div class="form-group">
+                    <i class="fas fa-envelope form-icon"></i>
+                    <input
+                        type="email"
+                        name="email"
+                        id="mail"
+                        class="form-input"
+                        required
+                        placeholder=" "
+                        pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$"
+                        title="Введіть коректну email адресу"
+                    >
+                    <label for="mail" class="form-label">Електронна пошта</label>
+                    <div class="error-message">Введіть коректну email адресу</div>
+                </div>
+                <div class="form-group">
+                    <i class="fas fa-lock form-icon"></i>
+                    <input
+                        type="password"
+                        name="password"
+                        id="password"
+                        class="form-input"
+                        required
+                        placeholder=" "
+                    >
+                    <label for="password" class="form-label">Пароль</label>
+                    <div class="error-message">Введіть ваш пароль</div>
+                </div>
+
+                <div class="password-options">
+                    <div class="remember-me">
+                        <input type="checkbox" id="remember" name="remember">
+                        <span class="checkbox-custom"></span>
+                        <label for="remember">Запам'ятати мене</label>
+                    </div>
+                    <a href="#" class="forgot-password">Забули пароль?</a>
+                </div>
+                <button type="submit" class="submit-btn pulse">
+                    <i class="fas fa-sign-in-alt"></i> Увійти до світу жахів
+                </button>
+                <div class="register-link">
+                    <p>Ще не бував у нашому світі? Це твій останній шанс відмовитись, але якщо дуже сміливий...</p>
+                    <a href="/register">
+                        <i class="fas fa-user-plus"></i> Реєструйся зараз
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginCard = document.querySelector('.login-card');
+            loginCard.style.opacity = '0';
+            setTimeout(() => {
+                loginCard.style.opacity = '1';
+            }, 100);
+            const form = document.querySelector('form');
+            const inputs = document.querySelectorAll('.form-input');
+            inputs.forEach(input => {
+                input.addEventListener('focus', function() {
+                    this.parentElement.classList.add('focused');
+                });
+
+                input.addEventListener('blur', function() {
+                    if (!this.value) {
+                        this.parentElement.classList.remove('focused');
+                    }
+                });
+                input.addEventListener('input', function() {
+                    if (this.checkValidity()) {
+                        this.style.borderColor = '#2ecc71';
+                    } else {
+                        this.style.borderColor = '';
+                    }
+                });
+            });
+            const submitBtn = document.querySelector('.submit-btn');
+
+            submitBtn.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-3px)';
+                this.classList.remove('pulse');
+            });
+
+            submitBtn.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+                this.classList.add('pulse');
+            });
+            submitBtn.addEventListener('mousedown', function() {
+                this.style.transform = 'translateY(-1px)';
+            });
+
+            submitBtn.addEventListener('mouseup', function() {
+                this.style.transform = 'translateY(-3px)';
+            });
+            const rememberCheckbox = document.getElementById('remember');
+            const checkboxCustom = document.querySelector('.checkbox-custom');
+
+            rememberCheckbox.addEventListener('change', function() {
+                if (this.checked) {
+                    checkboxCustom.style.transform = 'scale(1.1)';
+                    setTimeout(() => {
+                        checkboxCustom.style.transform = 'scale(1)';
+                    }, 200);
+                }
+            });
+
+            inputs.forEach(input => {
+                input.addEventListener('focus', function() {
+                    document.querySelectorAll('.blood-drip').forEach(drip => {
+                        drip.style.animationDuration = '5s';
+                    });
+                });
+
+                input.addEventListener('blur', function() {
+                    document.querySelectorAll('.blood-drip').forEach(drip => {
+                        drip.style.animationDuration = '15s';
+                    });
+                });
+            });
+            form.addEventListener('submit', function(e) {
+                let isValid = true;
+
+                inputs.forEach(input => {
+                    if (!input.checkValidity()) {
+                        isValid = false;
+                        input.style.borderColor = '#ff4444';
+                        input.parentElement.querySelector('.error-message').style.display = 'block';
+                        input.focus();
+                    }
+                });
+
+                if (!isValid) {
+                    e.preventDefault();
+                    submitBtn.style.animation = 'shake 0.5s ease-in-out';
+                    setTimeout(() => {
+                        submitBtn.style.animation = '';
+                    }, 500);
+                } else {
+                    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Входимо в світ жахів...';
+                    submitBtn.disabled = true;
+                    setTimeout(() => {
+                        submitBtn.innerHTML = '<i class="fas fa-check"></i> Вхід успішний!';
+                        submitBtn.style.background = 'linear-gradient(135deg, #2ecc71, #27ae60)';
+                    }, 1500);
+                }
+            });
+            const forgotPassword = document.querySelector('.forgot-password');
+            forgotPassword.addEventListener('click', function(e) {
+                e.preventDefault();
+                alert('Зв\'яжіться з адміністратором для відновлення пароля на порталі жахів!');
+            });
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'light') {
+                document.body.classList.add('light-mode');
+            }
+            const currentPage = window.location.pathname;
+            document.querySelectorAll('nav a').forEach(link => {
+                if (link.getAttribute('href') === currentPage) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

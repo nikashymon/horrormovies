@@ -1,0 +1,723 @@
+<!DOCTYPE HTML>
+<html lang="uk">
+<head>
+    <meta charset='UTF-8'>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Horror Films | Порталом жахів</title>
+    <link rel="stylesheet" href="../static/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --blood-red: #8b0000;
+            --dark-red: #5a0000;
+            --neon-red: #ff0000;
+            --glow-red: #ff4444;
+            --deep-black: #0a0a0a;
+            --charcoal: #1a1a1a;
+            --ash-gray: #2a2a2a;
+            --bone-white: #f0f0f0;
+            --ghost-white: #e8e8e8;
+            --shadow: 0 10px 30px rgba(139, 0, 0, 0.3);
+            --glow: 0 0 15px rgba(255, 0, 0, 0.5);
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @font-face {
+            font-family: 'HorrorFont';
+            src: url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&display=swap');
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--bone-white);
+            background: var(--deep-black);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                radial-gradient(circle at 20% 50%, rgba(139, 0, 0, 0.2) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(139, 0, 0, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(139, 0, 0, 0.1) 0%, transparent 50%),
+                linear-gradient(to bottom, rgba(10, 10, 10, 0.95), rgba(10, 10, 10, 0.98));
+            z-index: -1;
+        }
+        .blood-drip {
+            position: fixed;
+            top: -100px;
+            width: 3px;
+            height: 100px;
+            background: linear-gradient(to bottom, transparent, var(--neon-red));
+            animation: drip 15s infinite linear;
+            opacity: 0.3;
+            z-index: -1;
+        }
+
+        .blood-drip:nth-child(2) { left: 20%; animation-delay: 3s; }
+        .blood-drip:nth-child(3) { left: 40%; animation-delay: 7s; }
+        .blood-drip:nth-child(4) { left: 60%; animation-delay: 11s; }
+        .blood-drip:nth-child(5) { left: 80%; animation-delay: 5s; }
+
+        @keyframes drip {
+            0% {
+                top: -100px;
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.5;
+            }
+            90% {
+                opacity: 0.5;
+            }
+            100% {
+                top: 100vh;
+                opacity: 0;
+            }
+        }
+        nav {
+            background: rgba(26, 26, 26, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 3px solid var(--blood-red);
+            box-shadow: var(--shadow);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links li {
+            position: relative;
+        }
+
+        .nav-links a {
+            color: var(--ghost-white);
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            letter-spacing: 1px;
+        }
+
+        .nav-links a::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--neon-red);
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.4s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--neon-red);
+            background: rgba(139, 0, 0, 0.1);
+        }
+
+        .nav-links a:hover::before {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+
+        .nav-links .active {
+            color: var(--neon-red);
+            box-shadow: var(--glow);
+            background: rgba(139, 0, 0, 0.2);
+        }
+        header {
+            padding: 4rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .logo-container {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 2rem;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .logo-container img {
+            width: 350px;
+            filter: drop-shadow(0 0 20px rgba(255, 0, 0, 0.5));
+            transition: var(--transition);
+        }
+
+        .logo-container:hover img {
+            transform: scale(1.05) rotate(-2deg);
+            filter: drop-shadow(0 0 30px rgba(255, 0, 0, 0.7));
+        }
+
+        .logo-glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(255, 0, 0, 0.3) 0%, transparent 70%);
+            z-index: -1;
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.6; }
+        }
+
+        h1 {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 4.5rem;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            background: linear-gradient(to right, var(--bone-white), var(--neon-red));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.8);
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        .tagline {
+            font-size: 1.3rem;
+            color: var(--ghost-white);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+        main {
+            max-width: 1200px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+        }
+
+        .about-card {
+            background: linear-gradient(145deg, rgba(26, 26, 26, 0.9), rgba(10, 10, 10, 0.9));
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow:
+                0 10px 40px rgba(0, 0, 0, 0.5),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(139, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .about-card:hover {
+            transform: translateY(-10px);
+            box-shadow:
+                0 20px 50px rgba(139, 0, 0, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            border-color: var(--neon-red);
+        }
+
+        .about-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--blood-red), var(--neon-red));
+        }
+
+        .about-card h2 {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 2.5rem;
+            color: var(--neon-red);
+            margin-bottom: 1.5rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .about-card h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 100px;
+            height: 3px;
+            background: var(--neon-red);
+            border-radius: 2px;
+        }
+
+        .about-text {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: var(--ghost-white);
+            margin-bottom: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .about-text p {
+            margin-bottom: 1.5rem;
+            text-align: justify;
+        }
+
+        .highlight {
+            color: var(--neon-red);
+            font-weight: bold;
+            text-shadow: 0 0 5px rgba(255, 0, 0, 0.3);
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .stat-card {
+            background: rgba(139, 0, 0, 0.1);
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+            border: 1px solid rgba(139, 0, 0, 0.2);
+            transition: var(--transition);
+        }
+
+        .stat-card:hover {
+            background: rgba(139, 0, 0, 0.2);
+            transform: translateY(-5px);
+            border-color: var(--neon-red);
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: bold;
+            color: var(--neon-red);
+            margin-bottom: 0.5rem;
+            text-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            color: var(--ghost-white);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Футер */
+        footer {
+            background: linear-gradient(to top, rgba(10, 10, 10, 0.95), rgba(26, 26, 26, 0.95));
+            padding: 3rem 2rem;
+            margin-top: 5rem;
+            border-top: 3px solid var(--blood-red);
+            position: relative;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: -3px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--neon-red), transparent);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .footer-title {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 2.5rem;
+            color: var(--neon-red);
+            margin-bottom: 2rem;
+            text-shadow: 0 0 10px rgba(255, 0, 0, 0.3);
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .social-link {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: rgba(139, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--ghost-white);
+            font-size: 1.5rem;
+            text-decoration: none;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            border: 2px solid transparent;
+        }
+
+        .social-link::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, var(--blood-red), var(--neon-red));
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .social-link:hover {
+            transform: translateY(-5px) scale(1.1);
+            border-color: var(--neon-red);
+            box-shadow: var(--glow);
+        }
+
+        .social-link:hover::before {
+            opacity: 0.2;
+        }
+
+        .social-link i {
+            position: relative;
+            z-index: 1;
+        }
+
+        .social-link:hover i {
+            color: var(--neon-red);
+            animation: socialPulse 0.6s ease;
+        }
+
+        @keyframes socialPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        .copyright {
+            color: var(--ghost-white);
+            font-size: 0.9rem;
+            opacity: 0.7;
+            margin-top: 2rem;
+        }
+        .particles {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        .scroll-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: rgba(139, 0, 0, 0.8);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            z-index: 999;
+            border: 2px solid var(--neon-red);
+            box-shadow: var(--glow);
+        }
+
+        .scroll-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .scroll-top:hover {
+            background: var(--neon-red);
+            transform: translateY(-5px);
+        }
+        @media (max-width: 1024px) {
+            h1 {
+                font-size: 3.5rem;
+            }
+
+            .logo-container img {
+                width: 300px;
+            }
+
+            .nav-links {
+                gap: 1rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.8rem;
+            }
+
+            .logo-container img {
+                width: 250px;
+            }
+
+            .nav-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .about-card {
+                padding: 2rem;
+            }
+
+            .about-card h2 {
+                font-size: 2rem;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .social-links {
+                flex-wrap: wrap;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+
+            header {
+                padding: 2rem 1rem;
+            }
+
+            main {
+                padding: 0 1rem;
+            }
+
+            .about-card {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="blood-drip"></div>
+    <div class="blood-drip"></div>
+    <div class="blood-drip"></div>
+    <div class="blood-drip"></div>
+    <div class="blood-drip"></div>
+    <nav>
+        <div class="nav-container">
+            <ul class="nav-links">
+                <li><a href="#" class="active">Головна</a></li>
+                <li><a href="/films">Фільми</a></li>
+                <li><a href="/login">Логін</a></li>
+                <li><a href="/register">Реєстрація</a></li>
+                <li><a href="/review">Створити відгук</a></li>
+                <li><a href="/reviews">Відгуки</a></li>
+            </ul>
+        </div>
+    </nav>
+    <header>
+        <div class="logo-container">
+            <div class="logo-glow"></div>
+            <img src="../static/images/logo.png" alt="Horror Films Logo">
+        </div>
+        <h1>Портал Жахів</h1>
+        <p class="tagline">Там, де страх оживає, а серця завмирають...</p>
+    </header>
+    <main>
+        <div class="about-card">
+            <h2>Про Автора</h2>
+            <div class="about-text">
+                <p>Привіт, <span class="highlight">сміливі душі</span>! Я <span class="highlight">Жахливий</span>, і вас вітає мій темний сайт, присвячений фільмам жахів, де страх оживає в кожному кадрі.</p>
+
+                <p>Моя пристрасть до цього моторошного жанру зародилася в дитинстві, коли я зрозумів, що саме жах може стати найсильнішим наркотиком для душі, що прагне екстриму.</p>
+
+                <p>Тут я відкриваю перед вами <span class="highlight">безодні класичних і сучасних фільмів жахів</span>, де кожен кадр просякнутий страхом, а кожна історія — це заклик до потойбічного світу. Я вірю, що жахи — це не просто кінематограф, а похмурий шлях у глибини людської натури, де ховаються найтемніші табу.</p>
+
+                <p>Запрошую вас <span class="highlight">зануритися у світ</span>, де кожна добірка — це небезпечний крок у невідомість, а кожен фільм — це дзеркало, що відображає наші найглибші фобії.</p>
+
+                <p>Сподіваюся, ви знайдете щось, що викличе <span class="highlight">холод у ваших жилах</span> і залишить незабутній слід у вашій свідомості. Дякую, що наважилися заглянути в цю безодню.</p>
+
+                <p>Залишайтеся на зв'язку, адже попереду ще безліч <span class="highlight">жахливих відкриттів</span>!</p>
+            </div>
+
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="stat-number">500+</div>
+                    <div class="stat-label">Фільмів жахів</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">1000+</div>
+                    <div class="stat-label">Відгуків</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">24/7</div>
+                    <div class="stat-label">Страх онлайн</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">∞</div>
+                    <div class="stat-label">Нічних кошмарів</div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <div class="footer-content">
+            <h2 class="footer-title">Де ви можете мене впіймати</h2>
+            <div class="social-links">
+                <a href="#" class="social-link" title="Telegram">
+                    <i class="fab fa-telegram-plane"></i>
+                </a>
+                <a href="#" class="social-link" title="Instagram">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="#" class="social-link" title="Facebook">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="#" class="social-link" title="YouTube">
+                    <i class="fab fa-youtube"></i>
+                </a>
+                <a href="#" class="social-link" title="Twitter">
+                    <i class="fab fa-twitter"></i>
+                </a>
+            </div>
+            <p class="copyright">© 2024 Портал Жахів. Всі права захищені. | Вхід у темряву заборонено слабким духом</p>
+        </div>
+    </footer>
+    <div class="scroll-top" id="scrollTop">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
+    <script>
+        const scrollTopBtn = document.getElementById('scrollTop');
+
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                scrollTopBtn.classList.add('visible');
+            } else {
+                scrollTopBtn.classList.remove('visible');
+            }
+        });
+
+        scrollTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+        document.querySelectorAll('.about-card, .stat-card').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(el);
+        });
+        const aboutText = document.querySelector('.about-text');
+        const originalText = aboutText.innerHTML;
+
+        function typeWriterEffect() {
+            aboutText.innerHTML = '';
+            let i = 0;
+            const speed = 20;
+
+            function typeWriter() {
+                if (i < originalText.length) {
+                    aboutText.innerHTML += originalText.charAt(i);
+                    i++;
+                    setTimeout(typeWriter, speed);
+                }
+            }
+            typeWriter();
+        }
+        window.addEventListener('load', () => {
+            setTimeout(typeWriterEffect, 1000);
+        });
+        const logo = document.querySelector('.logo-container img');
+        logo.addEventListener('mouseenter', () => {
+            logo.style.filter = 'drop-shadow(0 0 40px rgba(255, 0, 0, 0.8))';
+        });
+        logo.addEventListener('mouseleave', () => {
+            setTimeout(() => {
+                logo.style.filter = 'drop-shadow(0 0 20px rgba(255, 0, 0, 0.5))';
+            }, 300);
+        });
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const opacity = 0.7 + (scrolled / 1000);
+            document.body.style.backgroundColor = `rgba(10, 10, 10, ${Math.min(opacity, 0.95)})`;
+        });
+    </script>
+</body>
+</html>

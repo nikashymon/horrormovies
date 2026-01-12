@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/film_detail.css">
+    <title>{{ film.name }}</title>
+    <style>
+        :root {
+            --primary-color: #e63946;
+            --primary-dark: #d63031;
+            --primary-light: #ff6b6b;
+            --dark-bg: #121212;
+            --darker-bg: #0a0a0a;
+            --card-bg: #1e1e1e;
+            --card-light: #2a2a2a;
+            --text-color: #f0f0f0;
+            --text-light: #b0b0b0;
+            --border-color: #333;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            --gradient: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            --video-aspect: calc(9 / 16 * 100%); /* 9:16 aspect ratio */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--dark-bg);
+            color: var(--text-color);
+            line-height: 1.6;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                radial-gradient(circle at 20% 50%, rgba(230, 57, 70, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(230, 57, 70, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(230, 57, 70, 0.08) 0%, transparent 50%);
+            z-index: -1;
+        }
+
+        header {
+            background: linear-gradient(to right, rgba(18, 18, 18, 0.95), rgba(30, 30, 30, 0.95));
+            backdrop-filter: blur(10px);
+            padding: 2rem 0;
+            border-bottom: 3px solid var(--primary-color);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--gradient);
+            animation: slideIn 1.5s ease-out;
+        }
+
+        header h1 {
+            text-align: center;
+            font-size: 3.5rem;
+            font-weight: 800;
+            color: var(--text-color);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
+            max-width: 90%;
+        }
+
+        header h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 25%;
+            width: 50%;
+            height: 4px;
+            background: var(--gradient);
+            border-radius: 2px;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 3rem;
+            animation: fadeIn 0.8s ease-out;
+        }
+        .film-details {
+            position: relative;
+            overflow: hidden;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            transform-style: preserve-3d;
+            transition: transform 0.3s ease;
+        }
+
+        .film-details:hover {
+            transform: translateY(-10px) scale(1.02);
+        }
+
+        .film-details::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--gradient);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 1;
+        }
+
+        .film-details:hover::before {
+            opacity: 0.2;
+        }
+
+        .film-details img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 20px;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+
+        .film-details:hover img {
+            transform: scale(1.05);
+        }
+        .film-info {
+            background: var(--card-bg);
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+        }
+
+        .film-info h2 {
+            color: var(--primary-color);
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            position: relative;
+            padding-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .film-info h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 80px;
+            height: 4px;
+            background: var(--gradient);
+            border-radius: 2px;
+        }
+
+        .film-info table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+        .film-info tr {
+            transition: all 0.3s ease;
+        }
+
+        .film-info tr:hover {
+            background: var(--card-light);
+            transform: translateX(10px);
+        }
+
+        .film-info th {
+            text-align: left;
+            padding: 1.2rem 1.5rem;
+            font-weight: 600;
+            color: var(--primary-light);
+            font-size: 1.1rem;
+            border-right: 2px solid var(--border-color);
+            width: 35%;
+        }
+
+        .film-info td {
+            padding: 1.2rem 1.5rem;
+            color: var(--text-color);
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .film-info tr:not(:last-child) {
+            border-bottom: 1px solid var(--border-color);
+        }
+        .description-container {
+            max-width: 1400px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .description-container h2 {
+            color: var(--primary-color);
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            display: inline-block;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .description-container h2::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--gradient);
+            border-radius: 2px;
+        }
+
+        .description-container p {
+            background: var(--card-bg);
+            padding: 2.5rem;
+            border-radius: 20px;
+            line-height: 1.8;
+            font-size: 1.1rem;
+            color: var(--text-light);
+            box-shadow: var(--shadow);
+            border-left: 5px solid var(--primary-color);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .description-container p::before {
+            content: '"';
+            position: absolute;
+            top: 10px;
+            left: 20px;
+            font-size: 8rem;
+            color: var(--primary-color);
+            opacity: 0.1;
+            font-family: Georgia, serif;
+            line-height: 1;
+        }
+        .video-container {
+            max-width: 1400px;
+            margin: 4rem auto;
+            padding: 0 2rem;
+            animation: fadeIn 1.2s ease-out;
+        }
+
+        .video-section {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin-bottom: 3rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+        }
+
+        .video-section h2 {
+            color: var(--primary-color);
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            position: relative;
+            padding-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .video-section h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 80px;
+            height: 4px;
+            background: var(--gradient);
+            border-radius: 2px;
+        }
+
+        .video-wrapper {
+            position: relative;
+            max-width: 600px; /* Збільшена ширина відео */
+            margin: 0 auto;
+            box-shadow: 0 25px 60px rgba(230, 57, 70, 0.3);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 3px solid var(--primary-color);
+            background: #000;
+            transition: all 0.3s ease;
+        }
+
+        .video-wrapper:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 30px 70px rgba(230, 57, 70, 0.4);
+        }
+
+        .video-wrapper::before {
+            content: '';
+            display: block;
+            padding-top: var(--video-aspect); /* 9:16 aspect ratio */
+        }
+
+        .video-wrapper video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 17px;
+            cursor: pointer;
+        }
+        .video-controls {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.95), rgba(0,0,0,0.7), transparent);
+            padding: 1.5rem 2rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 10;
+        }
+
+        .video-wrapper:hover .video-controls,
+        .video-wrapper:focus-within .video-controls {
+            opacity: 1;
+        }
+
+        .video-progress {
+            width: 100%;
+            height: 6px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 3px;
+            margin-bottom: 1.2rem;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .video-progress-bar {
+            width: 30%;
+            height: 100%;
+            background: var(--gradient);
+            border-radius: 3px;
+            transition: width 0.1s ease;
+        }
+
+        .video-buttons {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1.5rem;
+        }
+
+        .video-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.8rem;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .video-btn:hover {
+            background: var(--primary-color);
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(230, 57, 70, 0.5);
+        }
+
+        .video-time {
+            color: white;
+            font-size: 1rem;
+            font-weight: 500;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 1px;
+            flex-grow: 1;
+            text-align: center;
+        }
+        .format-indicator {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.8);
+            color: var(--primary-light);
+            padding: 0.6rem 1.2rem;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            z-index: 5;
+            backdrop-filter: blur(10px);
+            border: 2px solid var(--primary-color);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        .video-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1.5rem;
+            padding: 1rem 1.5rem;
+            background: rgba(30, 30, 30, 0.6);
+            border-radius: 15px;
+            border: 1px solid var(--border-color);
+        }
+
+        .video-quality {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .quality-badge {
+            background: var(--gradient);
+            color: white;
+            padding: 0.4rem 1rem;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .video-size {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 2.5rem;
+            padding: 1.2rem 3.5rem;
+            background: var(--gradient);
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            position: relative;
+            overflow: hidden;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(230, 57, 70, 0.3);
+            gap: 1rem;
+        }
+
+        .back-button::before {
+            content: '←';
+            font-size: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .back-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 35px rgba(230, 57, 70, 0.5);
+            padding-right: 4rem;
+            padding-left: 3rem;
+        }
+
+        .back-button:hover::before {
+            transform: translateX(-8px);
+        }
+
+        .back-button::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .back-button:hover::after {
+            width: 400px;
+            height: 400px;
+        }
+        footer {
+            background: var(--darker-bg);
+            padding: 2rem 0;
+            text-align: center;
+            margin-top: 4rem;
+            border-top: 1px solid var(--border-color);
+            position: relative;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 3px;
+            background: var(--gradient);
+        }
+
+        footer p {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(-100%);
+            }
+            to {
+                transform: translateX(0);
+            }
+        }
+        @media (max-width: 1200px) {
+            .video-wrapper {
+                max-width: 550px;
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .container {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            header h1 {
+                font-size: 2.8rem;
+            }
+
+            .video-wrapper {
+                max-width: 500px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2.2rem;
+            }
+
+            .container {
+                padding: 0 1rem;
+            }
+
+            .film-info {
+                padding: 1.5rem;
+            }
+
+            .film-info th,
+            .film-info td {
+                padding: 0.8rem 1rem;
+                font-size: 1rem;
+            }
+
+            .description-container p {
+                padding: 1.5rem;
+                font-size: 1rem;
+            }
+
+            .video-section {
+                padding: 1.5rem;
+            }
+
+            .video-wrapper {
+                max-width: 450px;
+            }
+
+            .video-controls {
+                padding: 1rem 1.5rem;
+            }
+
+            .video-btn {
+                width: 45px;
+                height: 45px;
+                font-size: 1.3rem;
+            }
+
+            .back-button {
+                padding: 1rem 2.5rem;
+                font-size: 1.1rem;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .video-wrapper {
+                max-width: 400px;
+                border-radius: 15px;
+            }
+
+            .video-wrapper::before {
+                padding-top: calc(16 / 9 * 100%);
+            }
+        }
+
+        @media (max-width: 480px) {
+            header h1 {
+                font-size: 1.8rem;
+            }
+
+            .film-info h2,
+            .description-container h2,
+            .video-section h2 {
+                font-size: 1.5rem;
+            }
+
+            .video-wrapper {
+                max-width: 350px;
+                border-radius: 12px;
+            }
+
+            .video-controls {
+                padding: 0.8rem 1.2rem;
+            }
+
+            .video-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+                padding: 0.6rem;
+            }
+
+            .format-indicator {
+                top: 15px;
+                right: 15px;
+                padding: 0.4rem 0.8rem;
+                font-size: 0.8rem;
+            }
+
+            .video-info {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: stretch;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .video-wrapper {
+                max-width: 300px;
+            }
+        }
+        .glow {
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 5px var(--primary-light),
+                             0 0 10px var(--primary-light),
+                             0 0 15px var(--primary-color);
+            }
+            to {
+                text-shadow: 0 0 10px var(--primary-light),
+                             0 0 20px var(--primary-light),
+                             0 0 30px var(--primary-color);
+            }
+        }
+        .duration-bar {
+            width: 100%;
+            height: 4px;
+            background: var(--border-color);
+            border-radius: 2px;
+            margin-top: 1rem;
+            overflow: hidden;
+        }
+
+        .duration-progress {
+            height: 100%;
+            background: var(--gradient);
+            width: 100%;
+            animation: progressAnimation 2s ease-out;
+        }
+
+        @keyframes progressAnimation {
+            from {
+                width: 0;
+            }
+            to {
+                width: 100%;
+            }
+        }
+        .video-wrapper.fullscreen {
+            max-width: 100vw;
+            max-height: 100vh;
+            width: 100vw;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 9999;
+            border-radius: 0;
+            border: none;
+            margin: 0;
+        }
+
+        .video-wrapper.fullscreen::before {
+            padding-top: 100vh;
+        }
+
+        .video-wrapper.fullscreen video {
+            border-radius: 0;
+            object-fit: contain;
+        }
+
+        .video-wrapper.fullscreen .format-indicator {
+            display: none;
+        }
+        .loading-indicator {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(255,255,255,0.1);
+            border-radius: 50%;
+            border-top-color: var(--primary-color);
+            animation: spin 1s linear infinite;
+            z-index: 2;
+        }
+
+        @keyframes spin {
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1 class="glow">{{ film.name }}</h1>
+    </header>
+
+    <div class="container">
+        <div class="film-details">
+            <img src="{{ film.poster }}" alt="{{ film.name }}">
+            <div class="duration-bar">
+                <div class="duration-progress"></div>
+            </div>
+        </div>
+
+        <div class="film-info">
+            <h2>Деталі фільму</h2>
+            <table>
+                <tr>
+                    <th>Рік випуску</th>
+                    <td>{{ film.year.strftime('%Y') }}</td>
+                </tr>
+                <tr>
+                    <th>Країна</th>
+                    <td>{{ film.country }}</td>
+                </tr>
+                <tr>
+                    <th>Жанр</th>
+                    <td>{{ film.genre }}</td>
+                </tr>
+                <tr>
+                    <th>Тривалість</th>
+                    <td>{{ film.duration }}</td>
+                </tr>
+                {% if film.director %}
+                <tr>
+                    <th>Режисер</th>
+                    <td>{{ film.director }}</td>
+                </tr>
+                {% endif %}
+                {% if film.actors %}
+                <tr>
+                    <th>Актори</th>
+                    <td>{{ film.actors }}</td>
+                </tr>
+                {% endif %}
+                {% if film.rating %}
+                <tr>
+                    <th>Рейтинг</th>
+                    <td>{{ film.rating }}/10 ⭐</td>
+                </tr>
+                {% endif %}
+            </table>
+        </div>
+    </div>
+
+    <div class="description-container">
+        <h2>Синопсис</h2>
+        <p>{{ film.description }}</p>
+    </div>
+
+    <div class="video-container">
+        <div class="video-section">
+            <h2>Перегляд фільму</h2>
+            <div class="video-wrapper" id="videoWrapper">
+                <div class="loading-indicator" id="loadingIndicator" style="display: none;"></div>
+                <div class="format-indicator">ВЕРТИКАЛЬНЕ ВІДЕО 9:16</div>
+                <video id="filmVideo" poster="{{ film.poster }}">
+                    <source src="../static/videod/{{ film.video_path }}" type="video/mp4">
+                    Ваш браузер не підтримує відео тег.
+                </video>
+                <div class="video-controls">
+                    <div class="video-progress" id="progressContainer">
+                        <div class="video-progress-bar" id="progressBar"></div>
+                    </div>
+                    <div class="video-buttons">
+                        <button class="video-btn" id="playBtn">▶️</button>
+                        <button class="video-btn" id="volumeBtn">🔊</button>
+                        <span class="video-time" id="timeDisplay">00:00 / 00:00</span>
+                        <button class="video-btn" id="fullscreenBtn">⛶</button>
+                    </div>
+                </div>
+            </div>
+            <div class="video-info">
+                <div class="video-quality">
+                    <span class="quality-badge">HD</span>
+                    <span class="video-size">Формат: 9:16</span>
+                </div>
+                <div class="video-size">
+                    Тривалість: {{ film.duration }}
+                </div>
+            </div>
+        </div>
+        <a href="/films" class="back-button">Назад до списку фільмів</a>
+    </div>
+
+    <footer>
+        <p>© 2024 Кінопортал. Всі права захищені.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const video = document.getElementById('filmVideo');
+            const playBtn = document.getElementById('playBtn');
+            const volumeBtn = document.getElementById('volumeBtn');
+            const progressBar = document.getElementById('progressBar');
+            const progressContainer = document.getElementById('progressContainer');
+            const timeDisplay = document.getElementById('timeDisplay');
+            const fullscreenBtn = document.getElementById('fullscreenBtn');
+            const videoWrapper = document.getElementById('videoWrapper');
+            const loadingIndicator = document.getElementById('loadingIndicator');
+            let isMuted = false;
+            function formatTime(seconds) {
+                const mins = Math.floor(seconds / 60);
+                const secs = Math.floor(seconds % 60);
+                return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+            }
+            function updateProgress() {
+                if (video.duration) {
+                    const progress = (video.currentTime / video.duration) * 100;
+                    progressBar.style.width = `${progress}%`;
+                    timeDisplay.textContent = `${formatTime(video.currentTime)} / ${formatTime(video.duration)}`;
+                }
+            }
+            progressContainer.addEventListener('click', (e) => {
+                const rect = e.target.getBoundingClientRect();
+                const pos = (e.clientX - rect.left) / rect.width;
+                video.currentTime = pos * video.duration;
+            });
+            playBtn.addEventListener('click', () => {
+                if (video.paused) {
+                    video.play();
+                    playBtn.textContent = '⏸️';
+                } else {
+                    video.pause();
+                    playBtn.textContent = '▶️';
+                }
+            });
+            volumeBtn.addEventListener('click', () => {
+                isMuted = !isMuted;
+                video.muted = isMuted;
+                volumeBtn.textContent = isMuted ? '🔇' : '🔊';
+            });
+            fullscreenBtn.addEventListener('click', () => {
+                if (!document.fullscreenElement) {
+                    if (videoWrapper.requestFullscreen) {
+                        videoWrapper.classList.add('fullscreen');
+                        videoWrapper.requestFullscreen();
+                    }
+                } else {
+                    if (document.exitFullscreen) {
+                        document.exitFullscreen();
+                        videoWrapper.classList.remove('fullscreen');
+                    }
+                }
+            });
+            document.addEventListener('fullscreenchange', () => {
+                if (!document.fullscreenElement) {
+                    videoWrapper.classList.remove('fullscreen');
+                }
+            });
+            video.addEventListener('waiting', () => {
+                loadingIndicator.style.display = 'block';
+            });
+
+            video.addEventListener('canplay', () => {
+                loadingIndicator.style.display = 'none';
+            });
+            video.addEventListener('timeupdate', updateProgress);
+            video.addEventListener('loadedmetadata', () => {
+                updateProgress();
+                video.play().catch(e => console.log("Автовідтворення заблоковано"));
+            });
+
+            video.addEventListener('ended', () => {
+                playBtn.textContent = '▶️';
+                progressBar.style.width = '100%';
+            });
+            video.addEventListener('click', () => {
+                if (video.paused) {
+                    video.play();
+                    playBtn.textContent = '⏸️';
+                } else {
+                    video.pause();
+                    playBtn.textContent = '▶️';
+                }
+            });
+            document.addEventListener('keydown', (e) => {
+                if (document.activeElement !== video && e.target !== video) {
+                    switch(e.key.toLowerCase()) {
+                        case ' ':
+                        case 'k':
+                            e.preventDefault();
+                            if (video.paused) {
+                                video.play();
+                                playBtn.textContent = '⏸️';
+                            } else {
+                                video.pause();
+                                playBtn.textContent = '▶️';
+                            }
+                            break;
+                        case 'f':
+                            fullscreenBtn.click();
+                            break;
+                        case 'm':
+                            volumeBtn.click();
+                            break;
+                    }
+                }
+            });
+            const elements = document.querySelectorAll('.container, .description-container, .video-container');
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.animation = 'fadeIn 0.8s ease-out forwards';
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            elements.forEach(element => {
+                observer.observe(element);
+            });
+            const durationProgress = document.querySelector('.duration-progress');
+            if (durationProgress) {
+                setTimeout(() => {
+                    durationProgress.style.animation = 'progressAnimation 2s ease-out forwards';
+                }, 500);
+            }
+
+            const title = document.querySelector('header h1');
+            title.addEventListener('mouseenter', () => {
+                title.classList.add('glow');
+            });
+
+            title.addEventListener('mouseleave', () => {
+                setTimeout(() => {
+                    title.classList.remove('glow');
+                }, 1000);
+            });
+        });
+    </script>
+</body>
+</html>

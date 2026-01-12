@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Відгуки користувачів | Портал жахів</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --blood-red: #8b0000;
+            --dark-red: #5a0000;
+            --neon-red: #ff0000;
+            --glow-red: #ff4444;
+            --deep-black: #0a0a0a;
+            --charcoal: #1a1a1a;
+            --ash-gray: #2a2a2a;
+            --bone-white: #f0f0f0;
+            --ghost-white: #e8e8e8;
+            --shadow: 0 10px 30px rgba(139, 0, 0, 0.3);
+            --glow: 0 0 15px rgba(255, 0, 0, 0.5);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @font-face {
+            font-family: 'HorrorFont';
+            src: url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&display=swap');
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--deep-black);
+            color: var(--bone-white);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                radial-gradient(circle at 20% 50%, rgba(139, 0, 0, 0.2) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(139, 0, 0, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(139, 0, 0, 0.1) 0%, transparent 50%);
+            z-index: -1;
+        }
+        .blood-drip {
+            position: fixed;
+            top: -100px;
+            width: 3px;
+            height: 100px;
+            background: linear-gradient(to bottom, transparent, var(--neon-red));
+            animation: drip 15s infinite linear;
+            opacity: 0.3;
+            z-index: -1;
+        }
+
+        .blood-drip:nth-child(2) { left: 20%; animation-delay: 3s; }
+        .blood-drip:nth-child(3) { left: 40%; animation-delay: 7s; }
+        .blood-drip:nth-child(4) { left: 60%; animation-delay: 11s; }
+        .blood-drip:nth-child(5) { left: 80%; animation-delay: 5s; }
+
+        @keyframes drip {
+            0% {
+                top: -100px;
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.5;
+            }
+            90% {
+                opacity: 0.5;
+            }
+            100% {
+                top: 100vh;
+                opacity: 0;
+            }
+        }
+        header {
+            background: rgba(26, 26, 26, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 3px solid var(--blood-red);
+            box-shadow: var(--shadow);
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        nav ul {
+            display: flex;
+            justify-content: center;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        nav ul li {
+            position: relative;
+        }
+
+        nav ul li a {
+            color: var(--ghost-white);
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            letter-spacing: 0.5px;
+        }
+
+        nav ul li a::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--neon-red);
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            color: var(--neon-red);
+            background: rgba(139, 0, 0, 0.1);
+        }
+
+        nav ul li a:hover::before {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+
+        nav ul li a.active {
+            color: var(--neon-red);
+            box-shadow: var(--glow);
+            background: rgba(139, 0, 0, 0.2);
+        }
+        .page-header {
+            text-align: center;
+            padding: 3rem 2rem;
+            position: relative;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .page-header h1 {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 3rem;
+            color: var(--neon-red);
+            margin-bottom: 1rem;
+            text-shadow: 0 0 15px rgba(255, 0, 0, 0.4);
+            position: relative;
+            display: inline-block;
+        }
+
+        .page-header h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--neon-red), transparent);
+        }
+
+        .page-subtitle {
+            color: var(--ghost-white);
+            font-size: 1.2rem;
+            opacity: 0.8;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            line-height: 1.6;
+        }
+        .stats-container {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .stat-card {
+            background: rgba(26, 26, 26, 0.7);
+            padding: 1.5rem 2rem;
+            border-radius: 15px;
+            text-align: center;
+            border: 1px solid rgba(139, 0, 0, 0.3);
+            transition: var(--transition);
+            min-width: 150px;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--neon-red);
+            box-shadow: var(--shadow);
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--neon-red);
+            margin-bottom: 0.5rem;
+            text-shadow: 0 0 10px rgba(255, 0, 0, 0.3);
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--ghost-white);
+            opacity: 0.8;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .filters-container {
+            max-width: 1200px;
+            margin: 0 auto 3rem;
+            padding: 0 2rem;
+        }
+
+        .filters {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 0.8rem 1.5rem;
+            background: rgba(42, 42, 42, 0.8);
+            border: 2px solid var(--ash-gray);
+            border-radius: 8px;
+            color: var(--ghost-white);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: rgba(139, 0, 0, 0.3);
+            border-color: var(--neon-red);
+            color: var(--neon-red);
+        }
+        .reviews-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem 4rem;
+        }
+        .review-card {
+            background: linear-gradient(145deg, rgba(26, 26, 26, 0.9), rgba(10, 10, 10, 0.9));
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(139, 0, 0, 0.3);
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 0.6s ease forwards;
+            opacity: 0;
+        }
+
+        .review-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--neon-red);
+            box-shadow: 0 15px 40px rgba(139, 0, 0, 0.4);
+        }
+
+        .review-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--blood-red), var(--neon-red));
+            opacity: 0.7;
+        }
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(139, 0, 0, 0.2);
+        }
+
+        .review-nickname {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .nickname-avatar {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, var(--blood-red), var(--neon-red));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .nickname-text {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--bone-white);
+        }
+
+        .nickname-text::before {
+            content: '👻';
+            margin-right: 8px;
+        }
+        .review-rating {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .rating-stars {
+            display: flex;
+            gap: 2px;
+        }
+
+        .rating-star {
+            color: var(--ash-gray);
+            font-size: 1.1rem;
+        }
+
+        .rating-star.filled {
+            color: var(--neon-red);
+        }
+
+        .rating-value {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--neon-red);
+            margin-left: 0.5rem;
+            min-width: 25px;
+        }
+        .review-content {
+            margin-bottom: 1.5rem;
+        }
+
+        .review-text {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            color: rgba(240, 240, 240, 0.9);
+            text-align: justify;
+        }
+        .review-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(139, 0, 0, 0.2);
+            font-size: 0.9rem;
+            color: rgba(240, 240, 240, 0.6);
+        }
+
+        .review-actions {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .action-btn {
+            background: none;
+            border: none;
+            color: rgba(240, 240, 240, 0.6);
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .action-btn:hover {
+            color: var(--neon-red);
+        }
+
+        .action-btn.liked {
+            color: var(--neon-red);
+        }
+
+        .action-btn.liked i {
+            animation: pulse 0.5s ease;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        /* Пустий стан */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: rgba(26, 26, 26, 0.5);
+            border-radius: 15px;
+            border: 2px dashed rgba(139, 0, 0, 0.3);
+        }
+
+        .empty-icon {
+            font-size: 4rem;
+            color: var(--neon-red);
+            margin-bottom: 1.5rem;
+            opacity: 0.5;
+        }
+
+        .empty-title {
+            font-size: 1.8rem;
+            color: var(--bone-white);
+            margin-bottom: 1rem;
+        }
+
+        .empty-text {
+            color: rgba(240, 240, 240, 0.7);
+            max-width: 500px;
+            margin: 0 auto 2rem;
+            line-height: 1.6;
+        }
+
+        .empty-btn {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, var(--blood-red), var(--neon-red));
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .empty-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(255, 0, 0, 0.3);
+        }
+        .scroll-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--blood-red), var(--neon-red));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.3rem;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            z-index: 100;
+            border: none;
+            box-shadow: var(--shadow);
+        }
+
+        .scroll-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .scroll-top:hover {
+            transform: translateY(-5px) scale(1.1);
+        }
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .review-card:nth-child(1) { animation-delay: 0.1s; }
+        .review-card:nth-child(2) { animation-delay: 0.2s; }
+        .review-card:nth-child(3) { animation-delay: 0.3s; }
+        .review-card:nth-child(4) { animation-delay: 0.4s; }
+        .review-card:nth-child(5) { animation-delay: 0.5s; }
+        .review-card:nth-child(6) { animation-delay: 0.6s; }
+        .review-card:nth-child(7) { animation-delay: 0.7s; }
+        .review-card:nth-child(8) { animation-delay: 0.8s; }
+        @media (max-width: 768px) {
+            .page-header h1 {
+                font-size: 2.2rem;
+            }
+
+            nav ul {
+                flex-wrap: wrap;
+                gap: 1rem;
+            }
+
+            .review-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .review-footer {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+
+            .review-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .stats-container {
+                gap: 1rem;
+            }
+
+            .stat-card {
+                min-width: 120px;
+                padding: 1rem 1.5rem;
+            }
+
+            .reviews-container {
+                padding: 0 1rem 3rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .page-header {
+                padding: 2rem 1rem;
+            }
+
+            .page-header h1 {
+                font-size: 1.8rem;
+            }
+
+            .review-card {
+                padding: 1.5rem;
+            }
+
+            .nickname-text {
+                font-size: 1.1rem;
+            }
+
+            .review-text {
+                font-size: 1rem;
+            }
+        }
+        body.light-mode {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: #333;
+        }
+
+        body.light-mode::before {
+            background: none;
+        }
+
+        body.light-mode header {
+            background: rgba(255, 255, 255, 0.95);
+            border-bottom: 3px solid #ff4444;
+        }
+
+        body.light-mode nav ul li a {
+            color: #555;
+        }
+
+        body.light-mode nav ul li a:hover {
+            color: #ff4444;
+            background: rgba(255, 68, 68, 0.1);
+        }
+
+        body.light-mode .review-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-color: rgba(255, 68, 68, 0.3);
+        }
+
+        body.light-mode .nickname-text {
+            color: #222;
+        }
+
+        body.light-mode .review-text {
+            color: #444;
+        }
+
+        body.light-mode .review-footer {
+            color: #666;
+        }
+
+        body.light-mode .stat-card {
+            background: rgba(255, 255, 255, 0.9);
+            border-color: rgba(255, 68, 68, 0.2);
+        }
+
+        body.light-mode .filter-btn {
+            background: rgba(240, 240, 240, 0.9);
+            border-color: #ddd;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="blood-drip"></div>
+    <div class="blood-drip"></div>
+    <div class="blood-drip"></div>
+    <div class="blood-drip"></div>
+    <div class="blood-drip"></div>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="/">Головна</a></li>
+                <li><a href="/login">Логін</a></li>
+                <li><a href="/register">Реєстрація</a></li>
+                <li><a href="/review">Створити відгук</a></li>
+                <li><a href="/films">Фільми</a></li>
+            </ul>
+        </nav>
+    </header>
+    <div class="page-header">
+        <h1>Жахливі відгуки</h1>
+        <p class="page-subtitle">Читайте найкривавіші та найстрашніші враження інших відвідувачів порталу</p>
+
+        <div class="stats-container">
+            <div class="stat-card">
+                <div class="stat-value" id="totalReviews">{{ reviews|length }}</div>
+                <div class="stat-label">Всього відгуків</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="avgRating">0</div>
+                <div class="stat-label">Середня оцінка</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="topRating">0</div>
+                <div class="stat-label">Максимальна оцінка</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="filters-container">
+        <div class="filters">
+            <button class="filter-btn active" data-filter="all">
+                <i class="fas fa-all"></i> Всі відгуки
+            </button>
+            <button class="filter-btn" data-filter="high">
+                <i class="fas fa-star"></i> Найвищий рейтинг
+            </button>
+            <button class="filter-btn" data-filter="low">
+                <i class="fas fa-star-half-alt"></i> Найнижчий рейтинг
+            </button>
+            <button class="filter-btn" data-filter="recent">
+                <i class="fas fa-clock"></i> Найновіші
+            </button>
+        </div>
+    </div>
+    <div class="reviews-container">
+        {% if reviews %}
+            {% for review in reviews %}
+                <div class="review-card" data-rating="{{ review.score }}" data-index="{{ loop.index }}">
+                    <div class="review-header">
+                        <div class="review-nickname">
+                            <div class="nickname-avatar">
+                                {{ review.nickname[0]|upper if review.nickname else '?' }}
+                            </div>
+                            <div class="nickname-text">{{ review.nickname }}</div>
+                        </div>
+
+                        <div class="review-rating">
+                            <div class="rating-stars">
+                                {% for i in range(1, 11) %}
+                                    <i class="fas fa-star rating-star {% if i <= review.score %}filled{% endif %}"></i>
+                                {% endfor %}
+                            </div>
+                            <div class="rating-value">{{ review.score }}/10</div>
+                        </div>
+                    </div>
+
+                    <div class="review-content">
+                        <p class="review-text">{{ review.review }}</p>
+                    </div>
+
+                    <div class="review-footer">
+                        <div class="review-date">
+                            <i class="far fa-clock"></i> {{ review.created_at.strftime('%d.%m.%Y %H:%M') if review.created_at else 'Давно' }}
+                        </div>
+                        <div class="review-actions">
+                            <button class="action-btn like-btn" data-review-id="{{ review.id }}">
+                                <i class="far fa-heart"></i> <span class="like-count">0</span>
+                            </button>
+                            <button class="action-btn comment-btn">
+                                <i class="far fa-comment"></i> Коментувати
+                            </button>
+                            <button class="action-btn share-btn">
+                                <i class="fas fa-share"></i> Поділитись
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="empty-state">
+                <div class="empty-icon">
+                    <i class="fas fa-ghost"></i>
+                </div>
+                <h2 class="empty-title">Тут ще немає відгуків</h2>
+                <p class="empty-text">Будьте першим, хто поділиться своїми жахливими враженнями від фільмів!</p>
+                <a href="/review" class="empty-btn">
+                    <i class="fas fa-pen"></i> Написати відгук
+                </a>
+            </div>
+        {% endif %}
+    </div>
+    <button class="scroll-top" id="scrollTop">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            function calculateStats() {
+                const reviews = document.querySelectorAll('.review-card');
+                if (reviews.length === 0) return;
+
+                let totalRating = 0;
+                let maxRating = 0;
+
+                reviews.forEach(review => {
+                    const rating = parseInt(review.dataset.rating);
+                    totalRating += rating;
+                    if (rating > maxRating) maxRating = rating;
+                });
+
+                const avgRating = (totalRating / reviews.length).toFixed(1);
+
+                document.getElementById('avgRating').textContent = avgRating;
+                document.getElementById('topRating').textContent = maxRating;
+            }
+            calculateStats();
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            const reviewCards = document.querySelectorAll('.review-card');
+
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+
+                    const filter = this.dataset.filter;
+                    const sortedReviews = Array.from(reviewCards);
+
+                    switch(filter) {
+                        case 'high':
+                            sortedReviews.sort((a, b) =>
+                                parseInt(b.dataset.rating) - parseInt(a.dataset.rating)
+                            );
+                            break;
+                        case 'low':
+                            sortedReviews.sort((a, b) =>
+                                parseInt(a.dataset.rating) - parseInt(b.dataset.rating)
+                            );
+                            break;
+                        case 'recent':
+                            sortedReviews.sort((a, b) =>
+                                parseInt(b.dataset.index) - parseInt(a.dataset.index)
+                            );
+                            break;
+                    }
+
+                    const container = document.querySelector('.reviews-container');
+                    sortedReviews.forEach(review => {
+                        container.appendChild(review);
+
+                        review.style.animation = 'none';
+                        setTimeout(() => {
+                            review.style.animation = 'fadeInUp 0.6s ease forwards';
+                        }, 10);
+                    });
+                });
+            });
+            const likeButtons = document.querySelectorAll('.like-btn');
+
+            likeButtons.forEach(button => {
+                const reviewId = button.dataset.reviewId;
+                const savedLikes = localStorage.getItem(`likes_${reviewId}`) || 0;
+                const isLiked = localStorage.getItem(`liked_${reviewId}`) === 'true';
+
+                button.querySelector('.like-count').textContent = savedLikes;
+                if (isLiked) {
+                    button.classList.add('liked');
+                    button.innerHTML = '<i class="fas fa-heart"></i> <span class="like-count">' + savedLikes + '</span>';
+                }
+
+                button.addEventListener('click', function() {
+                    const countElement = this.querySelector('.like-count');
+                    let count = parseInt(countElement.textContent);
+                    const isCurrentlyLiked = this.classList.contains('liked');
+
+                    if (isCurrentlyLiked) {
+                        count--;
+                        this.classList.remove('liked');
+                        this.innerHTML = '<i class="far fa-heart"></i> <span class="like-count">' + count + '</span>';
+                        localStorage.setItem(`liked_${reviewId}`, 'false');
+                    } else {
+                        count++;
+                        this.classList.add('liked');
+                        this.innerHTML = '<i class="fas fa-heart"></i> <span class="like-count">' + count + '</span>';
+                        localStorage.setItem(`liked_${reviewId}`, 'true');
+                        const heartIcon = this.querySelector('i');
+                        heartIcon.style.animation = 'pulse 0.5s ease';
+                        setTimeout(() => {
+                            heartIcon.style.animation = '';
+                        }, 500);
+                    }
+
+                    countElement.textContent = count;
+                    localStorage.setItem(`likes_${reviewId}`, count);
+                });
+            });
+            const shareButtons = document.querySelectorAll('.share-btn');
+
+            shareButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const reviewCard = this.closest('.review-card');
+                    const nickname = reviewCard.querySelector('.nickname-text').textContent;
+                    const rating = reviewCard.querySelector('.rating-value').textContent;
+                    const reviewText = reviewCard.querySelector('.review-text').textContent.substring(0, 100) + '...';
+
+                    const shareText = `Відгук від ${nickname} - ${rating}: ${reviewText}`;
+
+                    if (navigator.share) {
+                        navigator.share({
+                            title: 'Відгук на порталі жахів',
+                            text: shareText,
+                            url: window.location.href
+                        });
+                    } else {
+                        navigator.clipboard.writeText(shareText + '\n\n' + window.location.href)
+                            .then(() => {
+                                const originalText = this.innerHTML;
+                                this.innerHTML = '<i class="fas fa-check"></i> Скопійовано!';
+                                setTimeout(() => {
+                                    this.innerHTML = originalText;
+                                }, 2000);
+                            });
+                    }
+                });
+            });
+            const scrollTopBtn = document.getElementById('scrollTop');
+
+            window.addEventListener('scroll', () => {
+                if (window.pageYOffset > 300) {
+                    scrollTopBtn.classList.add('visible');
+                } else {
+                    scrollTopBtn.classList.remove('visible');
+                }
+            });
+
+            scrollTopBtn.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.animationPlayState = 'running';
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            reviewCards.forEach(card => {
+                card.style.animationPlayState = 'paused';
+                observer.observe(card);
+            });
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'light') {
+                document.body.classList.add('light-mode');
+            }
+            const currentPage = window.location.pathname;
+            document.querySelectorAll('nav a').forEach(link => {
+                if (link.getAttribute('href') === currentPage) {
+                    link.classList.add('active');
+                }
+            });
+            if (reviewCards.length > 0) {
+                likeButtons.forEach(button => {
+                    if (!localStorage.getItem(`likes_${button.dataset.reviewId}`)) {
+                        const randomLikes = Math.floor(Math.random() * 50);
+                        button.querySelector('.like-count').textContent = randomLikes;
+                        localStorage.setItem(`likes_${button.dataset.reviewId}`, randomLikes);
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

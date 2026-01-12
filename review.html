@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Відгуки | Портал жахів</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --blood-red: #8b0000;
+            --dark-red: #5a0000;
+            --neon-red: #ff0000;
+            --glow-red: #ff4444;
+            --deep-black: #0a0a0a;
+            --charcoal: #1a1a1a;
+            --ash-gray: #2a2a2a;
+            --bone-white: #f0f0f0;
+            --ghost-white: #e8e8e8;
+            --shadow: 0 10px 30px rgba(139, 0, 0, 0.3);
+            --glow: 0 0 15px rgba(255, 0, 0, 0.5);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @font-face {
+            font-family: 'HorrorFont';
+            src: url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&display=swap');
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--deep-black);
+            color: var(--bone-white);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                radial-gradient(circle at 20% 50%, rgba(139, 0, 0, 0.2) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(139, 0, 0, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(139, 0, 0, 0.1) 0%, transparent 50%);
+            z-index: -1;
+        }
+
+        header {
+            background: rgba(26, 26, 26, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 3px solid var(--blood-red);
+            box-shadow: var(--shadow);
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        nav ul {
+            display: flex;
+            justify-content: center;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        nav ul li {
+            position: relative;
+        }
+
+        nav ul li a {
+            color: var(--ghost-white);
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            letter-spacing: 0.5px;
+        }
+
+        nav ul li a::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--neon-red);
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            color: var(--neon-red);
+            background: rgba(139, 0, 0, 0.1);
+        }
+
+        nav ul li a:hover::before {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+
+        nav ul li a.active {
+            color: var(--neon-red);
+            box-shadow: var(--glow);
+            background: rgba(139, 0, 0, 0.2);
+        }
+
+        .review-container {
+            min-height: calc(100vh - 90px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .review-card {
+            background: linear-gradient(145deg, rgba(26, 26, 26, 0.9), rgba(10, 10, 10, 0.9));
+            border-radius: 20px;
+            padding: 3rem;
+            width: 100%;
+            max-width: 600px;
+            box-shadow:
+                0 20px 50px rgba(0, 0, 0, 0.5),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(139, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .review-card:hover {
+            transform: translateY(-5px);
+            box-shadow:
+                0 25px 60px rgba(139, 0, 0, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            border-color: var(--neon-red);
+        }
+
+        .review-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--blood-red), var(--neon-red));
+        }
+
+        .form-title {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .form-title h1 {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 2.5rem;
+            color: var(--neon-red);
+            margin-bottom: 1rem;
+            text-shadow: 0 0 10px rgba(255, 0, 0, 0.3);
+            position: relative;
+            display: inline-block;
+        }
+
+        .form-title h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--neon-red), transparent);
+        }
+
+        .form-title p {
+            color: var(--ghost-white);
+            font-size: 1.1rem;
+            opacity: 0.8;
+            line-height: 1.6;
+        }
+
+        .form-group {
+            position: relative;
+            margin-bottom: 2rem;
+        }
+
+        .form-input, .form-textarea {
+            width: 100%;
+            padding: 1rem 1rem 1rem 3rem;
+            background: rgba(42, 42, 42, 0.8);
+            border: 2px solid var(--ash-gray);
+            border-radius: 12px;
+            color: var(--bone-white);
+            font-size: 1rem;
+            transition: var(--transition);
+            outline: none;
+            font-family: inherit;
+        }
+
+        .form-textarea {
+            min-height: 150px;
+            resize: vertical;
+            padding-top: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .form-input:focus, .form-textarea:focus {
+            border-color: var(--neon-red);
+            box-shadow: 0 0 0 3px rgba(255, 0, 0, 0.2);
+            background: rgba(42, 42, 42, 0.9);
+        }
+
+        .form-input::placeholder, .form-textarea::placeholder {
+            color: transparent;
+        }
+
+        .form-label {
+            position: absolute;
+            left: 3rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(240, 240, 240, 0.6);
+            font-size: 1rem;
+            transition: var(--transition);
+            pointer-events: none;
+            background: transparent;
+            padding: 0 0.5rem;
+        }
+
+        .form-textarea + .form-label {
+            top: 1.5rem;
+            transform: none;
+        }
+
+        .form-input:focus + .form-label,
+        .form-input:not(:placeholder-shown) + .form-label,
+        .form-textarea:focus + .form-label,
+        .form-textarea:not(:placeholder-shown) + .form-label {
+            top: -10px;
+            left: 1rem;
+            font-size: 0.9rem;
+            color: var(--neon-red);
+            background: rgba(26, 26, 26, 0.9);
+            padding: 0 0.5rem;
+        }
+
+        .form-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--neon-red);
+            font-size: 1.1rem;
+            transition: var(--transition);
+        }
+
+        .form-textarea ~ .form-icon {
+            top: 1.5rem;
+            transform: none;
+        }
+
+        .form-input:focus ~ .form-icon,
+        .form-textarea:focus ~ .form-icon {
+            color: var(--glow-red);
+        }
+
+        .rating-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin: 1.5rem 0 2rem;
+            padding: 1.5rem;
+            background: rgba(42, 42, 42, 0.5);
+            border-radius: 12px;
+            border: 1px solid rgba(139, 0, 0, 0.2);
+        }
+
+        .rating-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .rating-label {
+            color: var(--ghost-white);
+            font-weight: 600;
+            font-size: 1rem;
+            white-space: nowrap;
+        }
+
+        .rating-value {
+            color: var(--neon-red);
+            font-weight: 700;
+            font-size: 1.5rem;
+            min-width: 30px;
+            text-align: center;
+        }
+
+        .stars-container {
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .rating-stars {
+            display: flex;
+            gap: 0.5rem;
+            width: fit-content;
+            min-width: min-content;
+            justify-content: center;
+            margin: 0 auto;
+            flex-wrap: nowrap;
+        }
+
+        .star {
+            font-size: 1.8rem;
+            color: var(--ash-gray);
+            cursor: pointer;
+            transition: var(--transition);
+            min-width: 30px;
+            text-align: center;
+        }
+
+        .star:hover,
+        .star:hover ~ .star {
+            color: var(--neon-red);
+        }
+
+        .star.selected {
+            color: var(--neon-red);
+        }
+
+        @media (max-width: 480px) {
+            .rating-stars {
+                gap: 0.3rem;
+            }
+
+            .star {
+                font-size: 1.5rem;
+                min-width: 25px;
+            }
+
+            .rating-value {
+                font-size: 1.3rem;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .rating-stars {
+                gap: 0.2rem;
+            }
+
+            .star {
+                font-size: 1.3rem;
+                min-width: 22px;
+            }
+        }
+
+        #rating {
+            opacity: 0;
+            position: absolute;
+            pointer-events: none;
+        }
+
+        .char-counter {
+            text-align: right;
+            font-size: 0.9rem;
+            color: rgba(240, 240, 240, 0.6);
+            margin-top: 0.5rem;
+        }
+
+        .char-counter.warning {
+            color: #ffa726;
+        }
+
+        .char-counter.error {
+            color: #ff4444;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 1.2rem;
+            background: linear-gradient(135deg, var(--blood-red), var(--neon-red));
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+            letter-spacing: 1px;
+            margin-top: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(255, 0, 0, 0.4);
+        }
+
+        .submit-btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .submit-btn:active {
+            transform: translateY(-1px);
+        }
+
+        @media (max-width: 768px) {
+            .review-card {
+                padding: 2.5rem 2rem;
+                margin: 1rem;
+            }
+
+            .form-title h1 {
+                font-size: 2rem;
+            }
+
+            nav ul {
+                flex-wrap: wrap;
+                gap: 1rem;
+                justify-content: center;
+            }
+
+            nav ul li a {
+                font-size: 1rem;
+                padding: 0.5rem 0.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .review-card {
+                padding: 2rem 1.5rem;
+            }
+
+            .form-title h1 {
+                font-size: 1.8rem;
+            }
+
+            .form-input, .form-textarea {
+                padding: 0.9rem 0.9rem 0.9rem 2.8rem;
+                font-size: 0.95rem;
+            }
+
+            .form-label {
+                left: 2.8rem;
+                font-size: 0.95rem;
+            }
+
+            .submit-btn {
+                padding: 1rem;
+                font-size: 1rem;
+            }
+
+            .review-container {
+                padding: 1rem;
+            }
+        }
+
+        body.light-mode {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: #333;
+        }
+
+        body.light-mode::before {
+            background: none;
+        }
+
+        body.light-mode header {
+            background: rgba(255, 255, 255, 0.95);
+            border-bottom: 3px solid #ff4444;
+        }
+
+        body.light-mode nav ul li a {
+            color: #555;
+        }
+
+        body.light-mode nav ul li a:hover {
+            color: #ff4444;
+            background: rgba(255, 68, 68, 0.1);
+        }
+
+        body.light-mode .review-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-color: rgba(255, 68, 68, 0.3);
+        }
+
+        body.light-mode .form-input,
+        body.light-mode .form-textarea {
+            background: rgba(255, 255, 255, 0.9);
+            border-color: #ddd;
+            color: #333;
+        }
+
+        body.light-mode .form-label {
+            color: #666;
+        }
+
+        body.light-mode .rating-container {
+            background: rgba(240, 240, 240, 0.9);
+            border-color: rgba(255, 68, 68, 0.2);
+        }
+
+        body.light-mode .rating-label {
+            color: #555;
+        }
+
+        body.light-mode .star {
+            color: #ccc;
+        }
+
+        body.light-mode .star.selected {
+            color: #ff4444;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="/">Головна</a></li>
+                <li><a href="/films">Фільми</a></li>
+                <li><a href="/login">Логін</a></li>
+                <li><a href="/reviews">Відгуки</a></li>
+                <li><a href="/register">Реєстрація</a></li>
+            </ul>
+        </nav>
+    </header>
+    <div class="review-container">
+        <div class="review-card">
+            <div class="form-title">
+                <h1>Залиште свій кривавий слід</h1>
+                <p>Поділіться вашими враженнями та жахливими переживаннями з іншими відвідувачами порталу</p>
+            </div>
+
+            <form action="/review" method="POST">
+                <div class="form-group">
+                    <i class="fas fa-user form-icon"></i>
+                    <input
+                        type="text"
+                        id="nickname"
+                        name="nickname"
+                        class="form-input"
+                        required
+                        placeholder=" "
+                        pattern="[A-Za-zА-Яа-яЁёЇїІіЄєҐґ0-9_\- ]{2,30}"
+                        title="Нікнейм має містити 2-30 символів (літери, цифри, пробіли, _, -)"
+                        maxlength="30"
+                    >
+                    <label for="nickname" class="form-label">Ваш кривавий нікнейм</label>
+                    <div class="char-counter" id="nickname-counter">0/30</div>
+                </div>
+
+                <div class="form-group">
+                    <i class="fas fa-comment form-icon"></i>
+                    <textarea
+                        id="review"
+                        name="review"
+                        class="form-textarea"
+                        required
+                        placeholder=" "
+                        maxlength="500"
+                        rows="6"
+                    ></textarea>
+                    <label for="review" class="form-label">Ваш жахливий відгук</label>
+                    <div class="char-counter" id="review-counter">0/500</div>
+                </div>
+
+                <div class="rating-container">
+                    <div class="rating-header">
+                        <div class="rating-label">
+                            <i class="fas fa-skull"></i> Оцінка жаху:
+                        </div>
+                        <div class="rating-value" id="rating-value">0</div>
+                    </div>
+
+                    <div class="stars-container">
+                        <div class="rating-stars" id="star-rating">
+                            <i class="fas fa-star star" data-value="1"></i>
+                            <i class="fas fa-star star" data-value="2"></i>
+                            <i class="fas fa-star star" data-value="3"></i>
+                            <i class="fas fa-star star" data-value="4"></i>
+                            <i class="fas fa-star star" data-value="5"></i>
+                            <i class="fas fa-star star" data-value="6"></i>
+                            <i class="fas fa-star star" data-value="7"></i>
+                            <i class="fas fa-star star" data-value="8"></i>
+                            <i class="fas fa-star star" data-value="9"></i>
+                            <i class="fas fa-star star" data-value="10"></i>
+                        </div>
+                    </div>
+                    <input type="number" id="rating" name="rating" min="1" max="10" required value="0">
+                </div>
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-skull-crossbones"></i> Відправити в темряву
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const nicknameInput = document.getElementById('nickname');
+            const reviewTextarea = document.getElementById('review');
+            const ratingInput = document.getElementById('rating');
+            const ratingValue = document.getElementById('rating-value');
+            const stars = document.querySelectorAll('.star');
+            const nicknameCounter = document.getElementById('nickname-counter');
+            const reviewCounter = document.getElementById('review-counter');
+            const form = document.querySelector('form');
+            const submitBtn = document.querySelector('.submit-btn');
+            const starsContainer = document.querySelector('.stars-container');
+            const ratingStars = document.querySelector('.rating-stars');
+            function updateStarsContainer() {
+                const containerWidth = starsContainer.clientWidth;
+                const starsWidth = ratingStars.scrollWidth;
+
+                if (starsWidth > containerWidth) {
+                    ratingStars.style.gap = '0.2rem';
+
+                    if (containerWidth < 300) {
+                        stars.forEach(star => {
+                            star.style.fontSize = '1.3rem';
+                        });
+                    }
+                }
+            }
+
+            updateStarsContainer();
+            window.addEventListener('resize', updateStarsContainer);
+            nicknameInput.addEventListener('input', function() {
+                const length = this.value.length;
+                nicknameCounter.textContent = `${length}/30`;
+
+                if (length > 25) {
+                    nicknameCounter.classList.add('warning');
+                } else {
+                    nicknameCounter.classList.remove('warning');
+                }
+
+                if (length === 30) {
+                    nicknameCounter.classList.add('error');
+                } else {
+                    nicknameCounter.classList.remove('error');
+                }
+            });
+            reviewTextarea.addEventListener('input', function() {
+                const length = this.value.length;
+                reviewCounter.textContent = `${length}/500`;
+
+                if (length > 450) {
+                    reviewCounter.classList.add('warning');
+                } else {
+                    reviewCounter.classList.remove('warning');
+                }
+
+                if (length === 500) {
+                    reviewCounter.classList.add('error');
+                } else {
+                    reviewCounter.classList.remove('error');
+                }
+            });
+            stars.forEach(star => {
+                star.addEventListener('click', function() {
+                    const value = parseInt(this.getAttribute('data-value'));
+                    ratingInput.value = value;
+                    ratingValue.textContent = value;
+
+                    stars.forEach((s, index) => {
+                        if (index < value) {
+                            s.classList.add('selected');
+                        } else {
+                            s.classList.remove('selected');
+                        }
+                    });
+                });
+
+                star.addEventListener('mouseenter', function() {
+                    const hoverValue = parseInt(this.getAttribute('data-value'));
+
+                    stars.forEach((s, index) => {
+                        if (index < hoverValue) {
+                            s.style.color = 'var(--neon-red)';
+                        } else {
+                            s.style.color = '';
+                        }
+                    });
+                });
+
+                star.addEventListener('mouseleave', function() {
+                    const currentValue = parseInt(ratingInput.value);
+
+                    stars.forEach((s, index) => {
+                        s.style.color = '';
+                        if (index < currentValue) {
+                            s.classList.add('selected');
+                        }
+                    });
+                });
+            });
+
+            const inputs = document.querySelectorAll('.form-input, .form-textarea');
+
+            inputs.forEach(input => {
+                input.addEventListener('focus', function() {
+                    this.parentElement.classList.add('focused');
+                });
+
+                input.addEventListener('blur', function() {
+                    if (!this.value) {
+                        this.parentElement.classList.remove('focused');
+                    }
+                });
+            });
+
+            submitBtn.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-3px)';
+            });
+
+            submitBtn.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
+
+            submitBtn.addEventListener('mousedown', function() {
+                this.style.transform = 'translateY(-1px)';
+            });
+
+            submitBtn.addEventListener('mouseup', function() {
+                this.style.transform = 'translateY(-3px)';
+            });
+
+            form.addEventListener('submit', function(e) {
+                let isValid = true;
+
+                if (parseInt(ratingInput.value) < 1 || parseInt(ratingInput.value) > 10) {
+                    isValid = false;
+                    ratingValue.style.color = '#ff4444';
+                }
+
+                inputs.forEach(input => {
+                    if (!input.checkValidity()) {
+                        isValid = false;
+                        input.style.borderColor = '#ff4444';
+                    }
+                });
+
+                if (!isValid) {
+                    e.preventDefault();
+                    submitBtn.style.animation = 'shake 0.5s ease-in-out';
+                    setTimeout(() => {
+                        submitBtn.style.animation = '';
+                    }, 500);
+
+                    if (parseInt(ratingInput.value) < 1) {
+                        alert('Будь ласка, оберіть рейтинг від 1 до 10 зірочок!');
+                    }
+                } else {
+                    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Відправляємо в пекло...';
+                    submitBtn.disabled = true;
+                }
+            });
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'light') {
+                document.body.classList.add('light-mode');
+            }
+
+            const currentPage = window.location.pathname;
+            document.querySelectorAll('nav a').forEach(link => {
+                if (link.getAttribute('href') === currentPage) {
+                    link.classList.add('active');
+                }
+            });
+            nicknameInput.dispatchEvent(new Event('input'));
+            reviewTextarea.dispatchEvent(new Event('input'));
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Фільми жахів | Портал страху</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --blood-red: #8b0000;
+            --dark-red: #5a0000;
+            --neon-red: #ff0000;
+            --deep-black: #0a0a0a;
+            --charcoal: #1a1a1a;
+            --ash-gray: #2a2a2a;
+            --bone-white: #f0f0f0;
+            --ghost-white: #e8e8e8;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--deep-black);
+            color: var(--bone-white);
+            min-height: 100vh;
+        }
+
+        /* Навігація */
+        nav {
+            background: var(--charcoal);
+            padding: 1rem 2rem;
+            border-bottom: 3px solid var(--blood-red);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--ghost-white);
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover {
+            background: rgba(139, 0, 0, 0.2);
+            color: var(--neon-red);
+        }
+
+        .nav-links a.active {
+            background: rgba(139, 0, 0, 0.3);
+            color: var(--neon-red);
+        }
+
+        /* Контейнер для пошуку */
+        .search-section {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .search-container {
+            background: rgba(26, 26, 26, 0.8);
+            border-radius: 15px;
+            padding: 2rem;
+            border: 2px solid var(--blood-red);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .search-row {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            align-items: center;
+        }
+
+        .search-input-container {
+            flex: 1;
+            position: relative;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--neon-red);
+            font-size: 1.1rem;
+        }
+
+        #searchInput {
+            width: 100%;
+            padding: 1rem 1rem 1rem 3rem;
+            background: rgba(10, 10, 10, 0.8);
+            border: 2px solid var(--ash-gray);
+            border-radius: 10px;
+            color: var(--bone-white);
+            font-size: 1rem;
+            transition: var(--transition);
+            outline: none;
+        }
+
+        #searchInput:focus {
+            border-color: var(--neon-red);
+            box-shadow: 0 0 0 3px rgba(255, 0, 0, 0.2);
+        }
+
+        #searchInput::placeholder {
+            color: rgba(240, 240, 240, 0.5);
+        }
+
+        /* Фільтри */
+        .filters-row {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-group {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .filter-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--neon-red);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        #filterCountry {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(10, 10, 10, 0.8);
+            border: 2px solid var(--ash-gray);
+            border-radius: 10px;
+            color: var(--bone-white);
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            outline: none;
+        }
+
+        #filterCountry:focus {
+            border-color: var(--neon-red);
+            box-shadow: 0 0 0 3px rgba(255, 0, 0, 0.2);
+        }
+
+        #filterCountry option {
+            background: var(--charcoal);
+            color: var(--bone-white);
+        }
+
+        .actions-row {
+            display: flex;
+            gap: 1rem;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .sort-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .action-button {
+            padding: 0.8rem 1.5rem;
+            background: rgba(42, 42, 42, 0.8);
+            border: 2px solid var(--ash-gray);
+            border-radius: 8px;
+            color: var(--bone-white);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .action-button:hover {
+            background: rgba(139, 0, 0, 0.3);
+            border-color: var(--neon-red);
+            transform: translateY(-2px);
+        }
+
+        .action-button i {
+            font-size: 1rem;
+        }
+
+        .action-button.primary {
+            background: linear-gradient(135deg, var(--blood-red), var(--neon-red));
+            border: none;
+        }
+
+        .action-button.primary:hover {
+            background: linear-gradient(135deg, #9a0000, #ff3333);
+            box-shadow: 0 5px 15px rgba(255, 0, 0, 0.3);
+        }
+
+        .theme-toggle {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--blood-red), var(--neon-red));
+            border: none;
+            color: white;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .theme-toggle:hover {
+            transform: rotate(180deg) scale(1.1);
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+        }
+        .page-header {
+            text-align: center;
+            padding: 2rem 1rem;
+            background: linear-gradient(rgba(10, 10, 10, 0.9), rgba(10, 10, 10, 0.7));
+            margin-bottom: 2rem;
+        }
+
+        .page-header h1 {
+            font-size: 2.5rem;
+            color: var(--neon-red);
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .page-subtitle {
+            color: var(--ghost-white);
+            font-size: 1.1rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .films-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem 3rem;
+        }
+
+        .films-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .film-card {
+            background: var(--charcoal);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: var(--transition);
+            border: 1px solid rgba(139, 0, 0, 0.3);
+        }
+
+        .film-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--neon-red);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .film-poster {
+            height: 350px;
+            overflow: hidden;
+        }
+
+        .film-poster img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .film-card:hover .film-poster img {
+            transform: scale(1.05);
+        }
+
+        .film-info {
+            padding: 1.5rem;
+        }
+
+        .film-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--bone-white);
+            margin-bottom: 0.8rem;
+            text-align: center;
+        }
+
+        .film-meta {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            color: rgba(240, 240, 240, 0.7);
+        }
+
+        .film-description {
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: rgba(240, 240, 240, 0.8);
+            margin-bottom: 1rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .read-more {
+            color: var(--neon-red);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            transition: var(--transition);
+        }
+
+        .read-more:hover {
+            gap: 0.5rem;
+        }
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
+            }
+
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 1rem;
+            }
+
+            .search-row {
+                flex-direction: column;
+            }
+
+            .filters-row {
+                flex-direction: column;
+            }
+
+            .filter-group {
+                min-width: 100%;
+            }
+
+            .actions-row {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .sort-buttons {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .films-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+
+            .page-header h1 {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .films-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .search-container {
+                padding: 1.5rem;
+            }
+
+            .action-button {
+                padding: 0.7rem 1.2rem;
+                font-size: 0.9rem;
+            }
+        }
+
+        body.light-mode {
+            background: #f5f5f5;
+            color: #333;
+        }
+
+        body.light-mode nav {
+            background: #fff;
+            border-bottom: 3px solid #ff4444;
+        }
+
+        body.light-mode .nav-links a {
+            color: #555;
+        }
+
+        body.light-mode .nav-links a:hover {
+            background: rgba(255, 68, 68, 0.1);
+            color: #ff4444;
+        }
+
+        body.light-mode .search-container {
+            background: rgba(255, 255, 255, 0.9);
+            border-color: #ff4444;
+        }
+
+        body.light-mode #searchInput,
+        body.light-mode #filterCountry {
+            background: rgba(255, 255, 255, 0.8);
+            border-color: #ddd;
+            color: #333;
+        }
+
+        body.light-mode .action-button {
+            background: rgba(240, 240, 240, 0.9);
+            border-color: #ddd;
+            color: #555;
+        }
+
+        body.light-mode .film-card {
+            background: #fff;
+            border-color: rgba(255, 68, 68, 0.2);
+        }
+
+        body.light-mode .film-title {
+            color: #222;
+        }
+
+        body.light-mode .film-description {
+            color: #666;
+        }
+
+        body.light-mode .page-header {
+            background: linear-gradient(rgba(245, 245, 245, 0.9), rgba(245, 245, 245, 0.7));
+        }
+
+        body.light-mode .page-header h1 {
+            color: #ff4444;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <ul class="nav-links">
+                <li><a href="/">Головна</a></li>
+                <li><a href="/films" class="active">Фільми</a></li>
+                <li><a href="/login">Логін</a></li>
+                <li><a href="/register">Реєстрація</a></li>
+                <li><a href="/review">Створити відгук</a></li>
+                <li><a href="/reviews">Відгуки</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="page-header">
+        <h1>Колекція фільмів жахів</h1>
+        <p class="page-subtitle">Знайдіть найкращі фільми для вашого наступного нічного перегляду</p>
+    </div>
+
+    <div class="search-section">
+        <div class="search-container">
+            <div class="search-row">
+                <div class="search-input-container">
+                    <i class="fas fa-search search-icon"></i>
+                    <input
+                        type="text"
+                        id="searchInput"
+                        placeholder="Введіть назву фільму для пошуку..."
+                    >
+                </div>
+                <button class="theme-toggle" id="darkModeToggle" title="Змінити тему">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+            <div class="filters-row">
+                <div class="filter-group">
+                    <label class="filter-label">
+                        <i class="fas fa-globe"></i> Країна виробництва
+                    </label>
+                    <select id="filterCountry">
+                        <option value="">Всі країни</option>
+                        <option value="USA">США</option>
+                        <option value="UK">Великобританія</option>
+                        <option value="Japan">Японія</option>
+                        <option value="Ukraine">Україна</option>
+                        <option value="Korea">Корея</option>
+                        <option value="Germany">Німеччина</option>
+                        <option value="France">Франція</option>
+                    </select>
+                </div>
+            </div>
+            <div class="actions-row">
+                <div class="sort-buttons">
+                    <button class="action-button" id="sortYear">
+                        <i class="fas fa-calendar-alt"></i> Сортувати за роком
+                    </button>
+                    <button class="action-button" id="sortName">
+                        <i class="fas fa-sort-alpha-down"></i> Сортувати за назвою
+                    </button>
+                    <button class="action-button" id="resetFilter">
+                        <i class="fas fa-redo"></i> Скинути все
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="films-container">
+        <div class="films-grid" id="movieList">
+            {% for film in films %}
+            <div class="film-card" data-title="{{ film.name }}" data-year="{{ film.year.strftime('%Y') }}" data-country="{{ film.country }}" data-description="{{ film.description }}">
+                <div class="film-poster">
+                    <a href="{{ url_for('film_detail', name=film.name) }}">
+                        <img src="{{ film.poster }}" alt="{{ film.name }}" loading="lazy"
+                             onerror="this.src='https://via.placeholder.com/300x400/1a1a1a/ff0000?text=No+Poster'">
+                    </a>
+                </div>
+                <div class="film-info">
+                    <h3 class="film-title">{{ film.name }}</h3>
+                    <div class="film-meta">
+                        <span><i class="fas fa-globe"></i> {{ film.country }}</span>
+                        <span><i class="fas fa-calendar"></i> {{ film.year.strftime('%Y') }}</span>
+                    </div>
+                    <p class="film-description">
+                        {{ film.description }}
+                    </p>
+                    <a href="{{ url_for('film_detail', name=film.name) }}" class="read-more">
+                        Детальніше <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchInput = document.getElementById('searchInput');
+        const filterCountry = document.getElementById('filterCountry');
+        const sortYearBtn = document.getElementById('sortYear');
+        const sortNameBtn = document.getElementById('sortName');
+        const resetFilterBtn = document.getElementById('resetFilter');
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const movieList = document.getElementById('movieList');
+        const movies = movieList.getElementsByClassName('film-card');
+        function filterMovies() {
+            const searchTerm = searchInput.value.toLowerCase().trim();
+            const country = filterCountry.value;
+
+            Array.from(movies).forEach(movie => {
+                const title = movie.dataset.title.toLowerCase();
+                const movieCountry = movie.dataset.country;
+
+                let shouldShow = true;
+
+                if (searchTerm && !title.includes(searchTerm)) {
+                    shouldShow = false;
+                }
+
+                if (country && country !== movieCountry) {
+                    shouldShow = false;
+                }
+
+                movie.style.display = shouldShow ? 'block' : 'none';
+            });
+        }
+
+        function sortMovies(criteria) {
+            const visibleMovies = Array.from(movies).filter(m => m.style.display !== 'none');
+
+            visibleMovies.sort((a, b) => {
+                if (criteria === 'year') {
+                    return parseInt(b.dataset.year) - parseInt(a.dataset.year); // новіші перші
+                } else {
+                    return a.dataset.title.localeCompare(b.dataset.title, 'uk');
+                }
+            });
+
+            visibleMovies.forEach(movie => {
+                movieList.appendChild(movie);
+            });
+        }
+
+        function resetFilters() {
+            searchInput.value = '';
+            filterCountry.selectedIndex = 0;
+            Array.from(movies).forEach(movie => {
+                movie.style.display = 'block';
+            });
+        }
+
+        function toggleTheme() {
+            document.body.classList.toggle('light-mode');
+            const isLightMode = document.body.classList.contains('light-mode');
+            localStorage.setItem('theme', isLightMode ? 'light' : 'dark');
+
+            const icon = darkModeToggle.querySelector('i');
+            icon.className = isLightMode ? 'fas fa-sun' : 'fas fa-moon';
+            darkModeToggle.setAttribute('title', isLightMode ? 'Увімкнути темний режим' : 'Увімкнути світлий режим');
+        }
+
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'light') {
+            document.body.classList.add('light-mode');
+            darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+            darkModeToggle.setAttribute('title', 'Увімкнути темний режим');
+        }
+
+        searchInput.addEventListener('input', filterMovies);
+        filterCountry.addEventListener('change', filterMovies);
+
+        sortYearBtn.addEventListener('click', () => {
+            sortMovies('year');
+            sortYearBtn.classList.add('primary');
+            sortNameBtn.classList.remove('primary');
+        });
+
+        sortNameBtn.addEventListener('click', () => {
+            sortMovies('name');
+            sortNameBtn.classList.add('primary');
+            sortYearBtn.classList.remove('primary');
+        });
+
+        resetFilterBtn.addEventListener('click', resetFilters);
+        darkModeToggle.addEventListener('click', toggleTheme);
+
+        document.querySelectorAll('.action-button').forEach(btn => {
+            btn.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-2px)';
+            });
+
+            btn.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
+        });
+    });
+</script>
+</body>
+</html>
